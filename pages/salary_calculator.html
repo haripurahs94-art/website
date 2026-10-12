@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>বেতন কাঠামো ক্যালকুলেটর</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1c1c1c; --line:#b9b9b9; --head:#eef1f4; --input:#fff8d6; --muted:#666;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#1b1d20; --fg:#e8e8e8; --line:#4a4e54; --head:#2a2e33; --input:#4a4318; --muted:#9aa0a6; }
+  }
+  html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"Nirmala UI","Kalpurush","SolaimanLipi","Noto Sans Bengali",Calibri,Arial,sans-serif;}
+  body{padding:20px;}
+  h1{font-size:20px;margin:0 0 14px;font-weight:600;}
+  .wrap{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;min-width:760px;font-size:16px;}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
+  th{background:var(--head);font-weight:600;}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  td.sl{text-align:center;width:44px;}
+  td.m{text-align:center;width:56px;}
+  input{width:100%;box-sizing:border-box;font:inherit;text-align:right;padding:4px 6px;border:2px solid #d4a800;background:var(--input);color:var(--fg);border-radius:3px;}
+  input:focus{outline:2px solid #1a73e8;outline-offset:1px;}
+  tfoot td{font-weight:700;background:var(--head);}
+  .note{margin-top:10px;color:var(--muted);font-size:14px;}
+  @media print{ input{border:none;background:none;} }
+</style>
+</head>
+<body>
+<h1>বেতন কাঠামো</h1>
+<div class="wrap">
+<table>
+  <thead>
+    <tr>
+      <th>SL</th><th>বর্ণনা</th><th>বাংলা</th><th class="num">মাসিক</th><th>বর্ণনা</th><th class="m">মাস</th><th class="num">মোট</th>
+    </tr>
+  </thead>
+  <tbody id="rows"></tbody>
+  <tfoot>
+    <tr><td colspan="6" style="text-align:right">সর্বমোট</td><td class="num" id="grand">0</td></tr>
+  </tfoot>
+</table>
+</div>
+<p class="note">হলুদ ঘরে বেসিক বেতন লিখুন — বাকি সব ঘর নিজে নিজে হিসাব হবে। (মেডিকেলের ৬০০০ টাকা ও কনভেয়েন্সের মান নিচের কোডে পরিবর্তন করা যায়।)</p>
+
+<script>
+/* কনফিগারেশন: পরিবর্তন করতে এখানে এডিট করুন */
+const MEDICAL_MONTHLY = 500;   // মাসিক মেডিকেল
+const MEDICAL_TOTAL   = 6000;  // বছরে মোট মেডিকেল (সবসময় স্থির)
+
+const items = [
+  {en:"Basic Salary", bn:"বেসিক বেতন", desc:"মাসিক বেতনের 12 গুন মোট এর ঘরে", months:12, type:"basic"},
+  {en:"House Rent Allowance", bn:"বাড়ি ভাড়া ভাতা", desc:"মাসিক বেতনের 7.5 %*12 মোট এর ঘরে", months:12, pct:0.075},
+  {en:"Medical Allowance", bn:"চিকিৎসা ভাতা", desc:"সবসময় 6000 টাকাই থাকবে মোট এর ঘরে", months:12, type:"medical"},
+  {en:"Conveyance Allowance", bn:"", desc:"", months:"", type:"none"},
+  {en:"Festival Bonus", bn:"উৎসব ভাতা", desc:"মাসিক বেতনের 50 %*2 এর ঘরে", months:2, pct:0.5},
+  {en:"Special Incentive", bn:"বিশেষ প্রণোদনা", desc:"মাসিক বেতনের 10 %*12 মোট এর ঘরে", months:12, pct:0.1},
+  {en:"Baishakhi Allowance", bn:"বৈশাখী ভাতা", desc:"মাসিক বেতনের 20 % মোট এর ঘরে", months:1, pct:0.2},
+];
+
+const bnDigits = "০১২৩৪৫৬৭৮৯";
+const fmt = n => Math.round(n).toLocaleString("en-US");
+
+const tbody = document.getElementById("rows");
+items.forEach((it,i)=>{
+  const tr = document.createElement("tr");
+  const monthlyCell = it.type==="basic"
+    ? '<input id="basic" type="number" min="0" inputmode="decimal" placeholder="বেসিক লিখুন" aria-label="মাসিক বেসিক বেতন">'
+    : (it.type==="medical" ? fmt(MEDICAL_MONTHLY) : "");
+  tr.innerHTML =
+    `<td class="sl">${i+1}</td><td>${it.en}</td><td>${it.bn}</td>`+
+    `<td class="num">${monthlyCell}</td><td>${it.desc}</td>`+
+    `<td class="m">${it.months}</td><td class="num" id="t${i}">0</td>`;
+  tbody.appendChild(tr);
+});
+
+function calc(){
+  const basic = parseFloat(document.getElementById("basic").value) || 0;
+  let grand = 0;
+  items.forEach((it,i)=>{
+    let total = 0;
+    if(it.type==="basic") total = basic*12;
+    else if(it.type==="medical") total = MEDICAL_TOTAL;
+    else if(it.type==="none") total = 0;
+    else total = basic*it.pct*it.months;
+    grand += total;
+    document.getElementById("t"+i).textContent = fmt(total);
+  });
+  document.getElementById("grand").textContent = fmt(grand);
+}
+document.getElementById("basic").addEventListener("input", calc);
+calc();
+</script>
+</body>
+</html>
