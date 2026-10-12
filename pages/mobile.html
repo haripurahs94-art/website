@@ -28,6 +28,9 @@ a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
 .step p{margin:7px 0}
 .step ul,.step ol{padding-left:23px;margin:8px 0}
 .prompt{background:#f7f8fc;border:1px solid var(--line);border-radius:12px;padding:16px;white-space:pre-wrap}
+.code-disclosure{margin:18px 0;background:#f7f8fc;border:1px solid var(--line);border-radius:12px;padding:14px}
+.code-disclosure summary{cursor:pointer;font-weight:700}
+.code-disclosure textarea{display:block;width:100%;min-height:360px;max-height:560px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#172033;color:#f4f7fb;font:12px/1.5 Consolas,"Courier New",monospace;white-space:pre;overflow:auto}
 .copy-row{display:flex;justify-content:flex-end;margin-top:10px}
 button{border:0;border-radius:9px;background:var(--primary);color:#fff;font:inherit;font-weight:700;padding:10px 16px;cursor:pointer}
 button:hover{filter:brightness(.93)}
@@ -221,6 +224,4761 @@ footer{text-align:center;color:var(--muted);padding:22px;border-top:1px solid va
       </div>
     </article>
   </section>
+  <section>
+    <h2 class="section-title">🏪 Shop Management Software তৈরির Prompt</h2>
+    <article class="card step">
+      <div class="step-num">১</div><div>
+        <h3>📝 সম্পূর্ণ Prompt কপি করুন</h3>
+        <p>নিচের prompt-টি ChatGPT বা Claude-এ পেস্ট করলে Google Sheets ও Apps Script দিয়ে Web-Based Shop Management Software তৈরির কোড এবং সেটআপ গাইড চাইতে পারবেন:</p>
+        <div class="prompt" id="shopManagementPrompt">Google Sheets + Google Apps Script দিয়ে আমার জন্য একটি সহজ ও সুন্দর Web-Based Shop Management Software তৈরি করো।
+
+আমি একদম beginner, তাই সবকিছু সহজভাবে করবে।
+
+Software-এ থাকবে:
+1. Dashboard
+2. Product Management
+3. Purchase Entry
+4. Sales / POS
+5. Inventory / Stock
+6. Expense Entry
+7. Daily &amp; Monthly Sales Report
+8. Daily &amp; Monthly Profit/Loss
+9. Product-wise Sales &amp; Profit
+10. Low Stock Alert
+11. Sales, Profit ও Stock Chart
+
+Stock automatically হিসাব হবে:
+
+Opening Stock + Purchase - Sales = Current Stock
+
+প্রথমে এই ৫টি Product থাকবে:
+সাবান, শ্যাম্পু, আটা, চিনি, চাল
+
+পরে Web App থেকেই নতুন Product যোগ করা যাবে।
+
+Softwareটি Google Sheet-এর Sidebar হবে না।
+এটি একটি সম্পূর্ণ Web App হবে এবং Browser-এর একটি URL দিয়ে ব্যবহার করা যাবে।
+
+Software fast করার জন্য optimized code ব্যবহার করবে:
+- Batch read/write
+- CacheService
+- LockService
+- অপ্রয়োজনীয় Sheet read/write বন্ধ
+- Dashboard দ্রুত load
+- একই data বারবার read করবে না
+- Mobile responsive UI
+
+সবকিছু তৈরি করার পর আমাকে দেখাবে:
+
+1. Google Sheet কীভাবে তৈরি করব
+2. Apps Script কীভাবে খুলব
+3. কোন code কোথায় paste করব
+4. setupSystem() কীভাবে run করব
+5. Permission কীভাবে দেব
+6. Web App কীভাবে Deploy করব
+7. Deploy করার পর URL কোথায় পাব
+8. সেই URL দিয়ে কীভাবে Software ব্যবহার করব
+
+আমি যেন শুধু তোমার দেওয়া steps follow করেই পুরো Software তৈরি ও Deploy করতে পারি।
+
+প্রথমে সংক্ষেপে architecture বুঝিয়ে দাও, তারপর সম্পূর্ণ working code দাও, তারপর একদম beginner-friendly Deploy Guide দাও।</div>
+        <div class="copy-row"><button type="button" id="copyShopManagementPrompt">Shop Management Prompt কপি করুন</button></div>
+        <p id="shopManagementCopyStatus" aria-live="polite"></p>
+      </div>
+    </article>
+    <details class="code-disclosure">
+      <summary>সম্পূর্ণ Shop Management Code.gs দেখুন ও কপি করুন</summary>
+      <p>এই কোডটি Apps Script-এর <strong>Code.gs</strong> ফাইলে পেস্ট করার জন্য। কোডটি চালাতে Google Sheet-এ Apps Script সেটআপ ও Web App Deploy করতে হবে।</p>
+      <textarea id="shopManagementCode" aria-label="সম্পূর্ণ Shop Management Code.gs" readonly spellcheck="false">/***************************************************************
+ * SHOP MANAGEMENT SYSTEM
+ * FULL WEB APP - VERSION 3
+ *
+ * Backend  : Google Sheets
+ * Engine   : Google Apps Script
+ * Frontend : HTML / CSS / JavaScript
+ *
+ * IMPORTANT:
+ * 1. Paste this entire code into Code.gs
+ * 2. Run setupSystem() once
+ * 3. Authorize
+ * 4. Deploy as Web App
+ ***************************************************************/
+
+
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+
+const CONFIG = {
+  VERSION: '3.0',
+
+  SHEETS: {
+    PRODUCTS: 'Products',
+    PURCHASES: 'Purchases',
+    SALES: 'Sales',
+    EXPENSES: 'Expenses',
+    CUSTOMERS: 'Customers',
+    SUPPLIERS: 'Suppliers',
+    REPORTS: 'Reports',
+    SETTINGS: 'Settings'
+  },
+
+  DEFAULT_PRODUCTS: [
+    ['P001', 'সাবান', 'Grocery', 'Pcs', 35, 45, 50, 10, true],
+    ['P002', 'শ্যাম্পু', 'Grocery', 'Pcs', 120, 150, 30, 5, true],
+    ['P003', 'আটা', 'Grocery', 'Kg', 55, 65, 40, 10, true],
+    ['P004', 'চিনি', 'Grocery', 'Kg', 125, 140, 50, 10, true],
+    ['P005', 'চাল', 'Grocery', 'Kg', 75, 90, 100, 20, true]
+  ]
+};
+
+
+/* ============================================================
+   SPREADSHEET ACCESS
+============================================================ */
+
+function getSpreadsheet_() {
+
+  const props =
+    PropertiesService.getScriptProperties();
+
+  let id =
+    props.getProperty('SPREADSHEET_ID');
+
+  if (id) {
+    return SpreadsheetApp.openById(id);
+  }
+
+  const active =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+  if (!active) {
+    throw new Error(
+      'Spreadsheet not connected. Please run setupSystem() once from Apps Script.'
+    );
+  }
+
+  props.setProperty(
+    'SPREADSHEET_ID',
+    active.getId()
+  );
+
+  return active;
+}
+
+
+/* ============================================================
+   WEB APP ENTRY
+============================================================ */
+
+function doGet() {
+
+  try {
+
+    getSpreadsheet_();
+
+    ensureSystem_();
+
+    return HtmlService
+      .createHtmlOutput(getWebAppHTML_())
+      .setTitle('Shop Management System')
+      .setXFrameOptionsMode(
+        HtmlService.XFrameOptionsMode.ALLOWALL
+      );
+
+  } catch (error) {
+
+    return HtmlService
+      .createHtmlOutput(
+        '&lt;h2&gt;Shop Management System&lt;/h2&gt;' +
+        '&lt;p&gt;' +
+        escapeHtml_(error.message) +
+        '&lt;/p&gt;' +
+        '&lt;p&gt;Please run &lt;b&gt;setupSystem()&lt;/b&gt; once from Apps Script.&lt;/p&gt;'
+      );
+
+  }
+}
+
+
+/* ============================================================
+   ON OPEN MENU
+============================================================ */
+
+function onOpen() {
+
+  SpreadsheetApp
+    .getUi()
+    .createMenu('Shop Management')
+    .addItem('Setup / Repair System', 'setupSystem')
+    .addItem('Open Web App', 'showWebAppUrl')
+    .addToUi();
+
+}
+
+
+/* ============================================================
+   SETUP SYSTEM
+============================================================ */
+
+function setupSystem() {
+
+  const ss =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+  if (!ss) {
+    throw new Error(
+      'Please open the Google Sheet first.'
+    );
+  }
+
+  PropertiesService
+    .getScriptProperties()
+    .setProperty(
+      'SPREADSHEET_ID',
+      ss.getId()
+    );
+
+  ensureSystem_();
+
+  SpreadsheetApp.flush();
+
+  SpreadsheetApp
+    .getUi()
+    .alert(
+      'Setup Complete',
+      'Shop Management System has been created successfully.',
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+}
+
+
+/* ============================================================
+   ENSURE ALL SHEETS EXIST
+============================================================ */
+
+function ensureSystem_() {
+
+  const ss =
+    getSpreadsheet_();
+
+  createProductsSheet_(ss);
+  createPurchasesSheet_(ss);
+  createSalesSheet_(ss);
+  createExpensesSheet_(ss);
+  createCustomersSheet_(ss);
+  createSuppliersSheet_(ss);
+  createReportsSheet_(ss);
+  createSettingsSheet_(ss);
+
+  createDefaultProducts_(ss);
+
+  applyProductFormulas_(ss);
+
+}
+
+
+/* ============================================================
+   SHEET HELPER
+============================================================ */
+
+function getOrCreateSheet_(ss, name) {
+
+  let sheet =
+    ss.getSheetByName(name);
+
+  if (!sheet) {
+    sheet =
+      ss.insertSheet(name);
+  }
+
+  return sheet;
+}
+
+
+/* ============================================================
+   HEADER HELPER
+============================================================ */
+
+function setHeaders_(sheet, headers) {
+
+  sheet
+    .getRange(
+      1,
+      1,
+      1,
+      headers.length
+    )
+    .setValues([headers])
+    .setFontWeight('bold')
+    .setBackground('#1a73e8')
+    .setFontColor('#ffffff')
+    .setHorizontalAlignment('center');
+
+  sheet.setFrozenRows(1);
+
+}
+
+
+/* ============================================================
+   PRODUCTS SHEET
+============================================================ */
+
+function createProductsSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  const headers = [
+    'Product ID',
+    'Product Name',
+    'Category',
+    'Unit',
+    'Purchase Price',
+    'Sale Price',
+    'Opening Stock',
+    'Reorder Level',
+    'Current Stock',
+    'Stock Value',
+    'Status',
+    'Active',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet
+    .getRange('E:J')
+    .setNumberFormat('#,##0.00');
+
+  sheet
+    .getRange('M:M')
+    .setNumberFormat('dd-mmm-yyyy hh:mm');
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   PURCHASE SHEET
+============================================================ */
+
+function createPurchasesSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.PURCHASES
+    );
+
+  const headers = [
+    'Purchase ID',
+    'Date',
+    'Supplier',
+    'Product ID',
+    'Product Name',
+    'Quantity',
+    'Unit Cost',
+    'Total Cost',
+    'Note',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet
+    .getRange('B:B')
+    .setNumberFormat('dd-mmm-yyyy');
+
+  sheet
+    .getRange('F:H')
+    .setNumberFormat('#,##0.00');
+
+  sheet
+    .getRange('J:J')
+    .setNumberFormat('dd-mmm-yyyy hh:mm');
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   SALES SHEET
+============================================================ */
+
+function createSalesSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.SALES
+    );
+
+  const headers = [
+    'Invoice ID',
+    'Date',
+    'Customer',
+    'Product ID',
+    'Product Name',
+    'Quantity',
+    'Unit Price',
+    'Unit Cost',
+    'Sales Amount',
+    'Cost Amount',
+    'Profit',
+    'Note',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet
+    .getRange('B:B')
+    .setNumberFormat('dd-mmm-yyyy');
+
+  sheet
+    .getRange('F:K')
+    .setNumberFormat('#,##0.00');
+
+  sheet
+    .getRange('M:M')
+    .setNumberFormat('dd-mmm-yyyy hh:mm');
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   EXPENSE SHEET
+============================================================ */
+
+function createExpensesSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.EXPENSES
+    );
+
+  const headers = [
+    'Expense ID',
+    'Date',
+    'Category',
+    'Amount',
+    'Note',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet
+    .getRange('B:B')
+    .setNumberFormat('dd-mmm-yyyy');
+
+  sheet
+    .getRange('D:D')
+    .setNumberFormat('#,##0.00');
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   CUSTOMERS
+============================================================ */
+
+function createCustomersSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.CUSTOMERS
+    );
+
+  const headers = [
+    'Customer ID',
+    'Customer Name',
+    'Phone',
+    'Address',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   SUPPLIERS
+============================================================ */
+
+function createSuppliersSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.SUPPLIERS
+    );
+
+  const headers = [
+    'Supplier ID',
+    'Supplier Name',
+    'Phone',
+    'Address',
+    'Created At'
+  ];
+
+  setHeaders_(
+    sheet,
+    headers
+  );
+
+  sheet.autoResizeColumns(
+    1,
+    headers.length
+  );
+
+}
+
+
+/* ============================================================
+   REPORTS SHEET
+============================================================ */
+
+function createReportsSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.REPORTS
+    );
+
+  if (sheet.getLastRow() === 0) {
+
+    sheet.getRange('A1:B8')
+      .setValues([
+        ['SHOP REPORTS', ''],
+        ['Today Sales', ''],
+        ['Today Purchase', ''],
+        ['Today Profit', ''],
+        ['Today Expense', ''],
+        ['Monthly Sales', ''],
+        ['Monthly Profit', ''],
+        ['Monthly Net Profit', '']
+      ]);
+
+  }
+
+  sheet
+    .getRange('A1:B1')
+    .merge()
+    .setFontSize(18)
+    .setFontWeight('bold')
+    .setBackground('#1a73e8')
+    .setFontColor('#ffffff');
+
+}
+
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+
+function createSettingsSheet_(ss) {
+
+  const sheet =
+    getOrCreateSheet_(
+      ss,
+      CONFIG.SHEETS.SETTINGS
+    );
+
+  if (sheet.getLastRow() === 0) {
+
+    sheet.getRange('A1:B6')
+      .setValues([
+        ['Setting', 'Value'],
+        ['Shop Name', 'My Shop'],
+        ['Currency', 'BDT'],
+        ['Software Version', CONFIG.VERSION],
+        ['Inventory Method', 'Latest Purchase Cost'],
+        ['Created At', new Date()]
+      ]);
+
+    sheet
+      .getRange('A1:B1')
+      .setFontWeight('bold')
+      .setBackground('#1a73e8')
+      .setFontColor('#ffffff');
+
+  }
+
+}
+
+
+/* ============================================================
+   DEFAULT PRODUCTS
+============================================================ */
+
+function createDefaultProducts_(ss) {
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  if (!sheet) {
+    return;
+  }
+
+  if (sheet.getLastRow() &gt; 1) {
+    return;
+  }
+
+  const rows =
+    CONFIG.DEFAULT_PRODUCTS.map(
+      function(p) {
+
+        return [
+          p[0],
+          p[1],
+          p[2],
+          p[3],
+          p[4],
+          p[5],
+          p[6],
+          p[7],
+          '',
+          '',
+          '',
+          p[8],
+          new Date()
+        ];
+
+      }
+    );
+
+  sheet
+    .getRange(
+      2,
+      1,
+      rows.length,
+      rows[0].length
+    )
+    .setValues(rows);
+
+}
+
+
+/* ============================================================
+   PRODUCT FORMULAS
+============================================================ */
+
+function applyProductFormulas_(ss) {
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  if (!sheet) {
+    return;
+  }
+
+  const lastRow =
+    Math.max(
+      sheet.getLastRow(),
+      2
+    );
+
+  for (
+    let row = 2;
+    row &lt;= lastRow;
+    row++
+  ) {
+
+    sheet
+      .getRange(row, 9)
+      .setFormula(
+        '=IF(A' + row +
+        '="","",G' + row +
+        '+SUMIF(Purchases!D:D,A' +
+        row +
+        ',Purchases!F:F)-SUMIF(Sales!D:D,A' +
+        row +
+        ',Sales!F:F))'
+      );
+
+    sheet
+      .getRange(row, 10)
+      .setFormula(
+        '=IF(A' + row +
+        '="","",I' + row +
+        '*E' + row +
+        ')'
+      );
+
+    sheet
+      .getRange(row, 11)
+      .setFormula(
+        '=IF(A' + row +
+        '="","",IF(I' + row +
+        '&lt;=0,"OUT OF STOCK",IF(I' +
+        row +
+        '&lt;=H' +
+        row +
+        ',"LOW STOCK","OK")))'
+      );
+
+  }
+
+}
+
+
+/* ============================================================
+   PRODUCT LIST
+============================================================ */
+
+function getProducts() {
+
+  ensureSystem_();
+
+  const ss =
+    getSpreadsheet_();
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  SpreadsheetApp.flush();
+
+  const lastRow =
+    sheet.getLastRow();
+
+  if (lastRow &lt; 2) {
+    return [];
+  }
+
+  const values =
+    sheet
+      .getRange(
+        2,
+        1,
+        lastRow - 1,
+        13
+      )
+      .getValues();
+
+  return values
+    .filter(
+      function(r) {
+        return r[0];
+      }
+    )
+    .map(
+      function(r) {
+
+        return {
+          id: String(r[0]),
+          name: String(r[1]),
+          category: String(r[2]),
+          unit: String(r[3]),
+          purchasePrice: Number(r[4]) || 0,
+          salePrice: Number(r[5]) || 0,
+          openingStock: Number(r[6]) || 0,
+          reorderLevel: Number(r[7]) || 0,
+          currentStock: Number(r[8]) || 0,
+          stockValue: Number(r[9]) || 0,
+          status: String(r[10] || ''),
+          active: r[11] !== false
+        };
+
+      }
+    );
+
+}
+
+
+/* ============================================================
+   ADD PRODUCT
+============================================================ */
+
+function addProduct(data) {
+
+  const lock =
+    LockService.getScriptLock();
+
+  lock.waitLock(30000);
+
+  try {
+
+    ensureSystem_();
+
+    if (!data || !data.name) {
+      throw new Error(
+        'Product name is required.'
+      );
+    }
+
+    const ss =
+      getSpreadsheet_();
+
+    const sheet =
+      ss.getSheetByName(
+        CONFIG.SHEETS.PRODUCTS
+      );
+
+    const products =
+      getProducts();
+
+    const name =
+      String(data.name)
+        .trim();
+
+    const duplicate =
+      products.some(
+        function(p) {
+
+          return p.name
+            .toLowerCase() ===
+            name.toLowerCase();
+
+        }
+      );
+
+    if (duplicate) {
+      throw new Error(
+        'This product already exists.'
+      );
+    }
+
+    const id =
+      generateProductId_();
+
+    sheet.appendRow([
+      id,
+      name,
+      data.category || 'General',
+      data.unit || 'Pcs',
+      Number(data.purchasePrice) || 0,
+      Number(data.salePrice) || 0,
+      Number(data.openingStock) || 0,
+      Number(data.reorderLevel) || 0,
+      '',
+      '',
+      '',
+      true,
+      new Date()
+    ]);
+
+    applyProductFormulas_(ss);
+
+    SpreadsheetApp.flush();
+
+    return {
+      success: true,
+      id: id,
+      message: 'Product added successfully.'
+    };
+
+  } finally {
+
+    lock.releaseLock();
+
+  }
+
+}
+
+
+/* ============================================================
+   UPDATE PRODUCT
+============================================================ */
+
+function updateProduct(data) {
+
+  ensureSystem_();
+
+  if (!data || !data.id) {
+    throw new Error(
+      'Product ID is required.'
+    );
+  }
+
+  const ss =
+    getSpreadsheet_();
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  const lastRow =
+    sheet.getLastRow();
+
+  if (lastRow &lt; 2) {
+    throw new Error(
+      'No products found.'
+    );
+  }
+
+  const ids =
+    sheet
+      .getRange(
+        2,
+        1,
+        lastRow - 1,
+        1
+      )
+      .getValues()
+      .flat();
+
+  const index =
+    ids.indexOf(data.id);
+
+  if (index === -1) {
+    throw new Error(
+      'Product not found.'
+    );
+  }
+
+  const row =
+    index + 2;
+
+  sheet
+    .getRange(row, 2, 1, 7)
+    .setValues([[
+      data.name,
+      data.category || 'General',
+      data.unit || 'Pcs',
+      Number(data.purchasePrice) || 0,
+      Number(data.salePrice) || 0,
+      Number(data.openingStock) || 0,
+      Number(data.reorderLevel) || 0
+    ]]);
+
+  sheet
+    .getRange(row, 12)
+    .setValue(
+      data.active !== false
+    );
+
+  applyProductFormulas_(ss);
+
+  SpreadsheetApp.flush();
+
+  return {
+    success: true,
+    message: 'Product updated successfully.'
+  };
+
+}
+
+
+/* ============================================================
+   PRODUCT ID
+============================================================ */
+
+function generateProductId_() {
+
+  const products =
+    getProducts();
+
+  let max =
+    0;
+
+  products.forEach(
+    function(p) {
+
+      const number =
+        parseInt(
+          String(p.id)
+            .replace('P', ''),
+          10
+        );
+
+      if (
+        !isNaN(number) &amp;&amp;
+        number &gt; max
+      ) {
+        max = number;
+      }
+
+    }
+  );
+
+  return 'P' +
+    String(max + 1)
+      .padStart(3, '0');
+
+}
+
+
+/* ============================================================
+   PURCHASE
+============================================================ */
+
+function savePurchase(data) {
+
+  const lock =
+    LockService.getScriptLock();
+
+  lock.waitLock(30000);
+
+  try {
+
+    ensureSystem_();
+
+    if (!data.productId) {
+      throw new Error(
+        'Please select a product.'
+      );
+    }
+
+    const quantity =
+      Number(data.quantity);
+
+    const unitCost =
+      Number(data.unitCost);
+
+    if (
+      !isFinite(quantity) ||
+      quantity &lt;= 0
+    ) {
+      throw new Error(
+        'Quantity must be greater than zero.'
+      );
+    }
+
+    if (
+      !isFinite(unitCost) ||
+      unitCost &lt; 0
+    ) {
+      throw new Error(
+        'Invalid unit cost.'
+      );
+    }
+
+    const products =
+      getProducts();
+
+    const product =
+      products.find(
+        function(p) {
+          return p.id === data.productId;
+        }
+      );
+
+    if (!product) {
+      throw new Error(
+        'Product not found.'
+      );
+    }
+
+    const ss =
+      getSpreadsheet_();
+
+    const sheet =
+      ss.getSheetByName(
+        CONFIG.SHEETS.PURCHASES
+      );
+
+    const purchaseId =
+      generateTransactionId_('PUR');
+
+    const date =
+      parseDate_(data.date);
+
+    const total =
+      quantity * unitCost;
+
+    sheet.appendRow([
+      purchaseId,
+      date,
+      data.supplier || '',
+      product.id,
+      product.name,
+      quantity,
+      unitCost,
+      total,
+      data.note || '',
+      new Date()
+    ]);
+
+    // Latest purchase price becomes current cost.
+    updateProductCost_(
+      product.id,
+      unitCost
+    );
+
+    return {
+      success: true,
+      purchaseId: purchaseId,
+      total: total,
+      message: 'Purchase saved successfully.'
+    };
+
+  } finally {
+
+    lock.releaseLock();
+
+  }
+
+}
+
+
+/* ============================================================
+   UPDATE PRODUCT COST
+============================================================ */
+
+function updateProductCost_(
+  productId,
+  cost
+) {
+
+  const ss =
+    getSpreadsheet_();
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.PRODUCTS
+    );
+
+  const lastRow =
+    sheet.getLastRow();
+
+  if (lastRow &lt; 2) {
+    return;
+  }
+
+  const ids =
+    sheet
+      .getRange(
+        2,
+        1,
+        lastRow - 1,
+        1
+      )
+      .getValues()
+      .flat();
+
+  const index =
+    ids.indexOf(productId);
+
+  if (index !== -1) {
+
+    sheet
+      .getRange(
+        index + 2,
+        5
+      )
+      .setValue(cost);
+
+  }
+
+}
+
+
+/* ============================================================
+   SALES / POS
+============================================================ */
+
+function saveSale(data) {
+
+  const lock =
+    LockService.getScriptLock();
+
+  lock.waitLock(30000);
+
+  try {
+
+    ensureSystem_();
+
+    if (
+      !data ||
+      !data.items ||
+      data.items.length === 0
+    ) {
+      throw new Error(
+        'Please add at least one product to the cart.'
+      );
+    }
+
+    const products =
+      getProducts();
+
+    const productMap = {};
+
+    products.forEach(
+      function(p) {
+        productMap[p.id] = p;
+      }
+    );
+
+    /*
+     Aggregate quantity by product.
+     This prevents selling the same product
+     multiple times in one invoice beyond stock.
+    */
+
+    const quantities = {};
+
+    data.items.forEach(
+      function(item) {
+
+        const qty =
+          Number(item.quantity);
+
+        if (
+          !isFinite(qty) ||
+          qty &lt;= 0
+        ) {
+          throw new Error(
+            'Invalid quantity.'
+          );
+        }
+
+        if (
+          !productMap[item.productId]
+        ) {
+          throw new Error(
+            'Product not found.'
+          );
+        }
+
+        quantities[item.productId] =
+          (quantities[item.productId] || 0) +
+          qty;
+
+      }
+    );
+
+    // Validate stock.
+    Object.keys(quantities)
+      .forEach(
+        function(productId) {
+
+          const product =
+            productMap[productId];
+
+          if (
+            quantities[productId] &gt;
+            product.currentStock
+          ) {
+
+            throw new Error(
+              'Insufficient stock for ' +
+              product.name +
+              '. Available: ' +
+              product.currentStock +
+              ' ' +
+              product.unit
+            );
+
+          }
+
+        }
+      );
+
+    const ss =
+      getSpreadsheet_();
+
+    const sheet =
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      );
+
+    const invoiceId =
+      generateTransactionId_('INV');
+
+    const date =
+      parseDate_(data.date);
+
+    const rows = [];
+
+    let grandTotal = 0;
+    let grandProfit = 0;
+
+    data.items.forEach(
+      function(item) {
+
+        const product =
+          productMap[item.productId];
+
+        const qty =
+          Number(item.quantity);
+
+        const price =
+          Number(item.unitPrice);
+
+        const cost =
+          Number(product.purchasePrice) || 0;
+
+        const salesAmount =
+          qty * price;
+
+        const costAmount =
+          qty * cost;
+
+        const profit =
+          salesAmount - costAmount;
+
+        grandTotal +=
+          salesAmount;
+
+        grandProfit +=
+          profit;
+
+        rows.push([
+          invoiceId,
+          date,
+          data.customer || '',
+          product.id,
+          product.name,
+          qty,
+          price,
+          cost,
+          salesAmount,
+          costAmount,
+          profit,
+          data.note || '',
+          new Date()
+        ]);
+
+      }
+    );
+
+    sheet
+      .getRange(
+        sheet.getLastRow() + 1,
+        1,
+        rows.length,
+        rows[0].length
+      )
+      .setValues(rows);
+
+    SpreadsheetApp.flush();
+
+    return {
+      success: true,
+      invoiceId: invoiceId,
+      total: grandTotal,
+      profit: grandProfit,
+      message: 'Sale completed successfully.'
+    };
+
+  } finally {
+
+    lock.releaseLock();
+
+  }
+
+}
+
+
+/* ============================================================
+   EXPENSE
+============================================================ */
+
+function saveExpense(data) {
+
+  ensureSystem_();
+
+  const amount =
+    Number(data.amount);
+
+  if (
+    !isFinite(amount) ||
+    amount &lt;= 0
+  ) {
+    throw new Error(
+      'Expense amount must be greater than zero.'
+    );
+  }
+
+  const ss =
+    getSpreadsheet_();
+
+  const sheet =
+    ss.getSheetByName(
+      CONFIG.SHEETS.EXPENSES
+    );
+
+  const id =
+    generateTransactionId_('EXP');
+
+  sheet.appendRow([
+    id,
+    parseDate_(data.date),
+    data.category || 'General',
+    amount,
+    data.note || '',
+    new Date()
+  ]);
+
+  return {
+    success: true,
+    id: id,
+    message: 'Expense saved successfully.'
+  };
+
+}
+
+
+/* ============================================================
+   DASHBOARD DATA
+============================================================ */
+
+function getDashboardData() {
+
+  ensureSystem_();
+
+  const ss =
+    getSpreadsheet_();
+
+  const sales =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      )
+    );
+
+  const purchases =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.PURCHASES
+      )
+    );
+
+  const expenses =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.EXPENSES
+      )
+    );
+
+  const products =
+    getProducts();
+
+  const today =
+    new Date();
+
+  let todaySales = 0;
+  let todayProfit = 0;
+  let todayPurchase = 0;
+  let todayExpense = 0;
+
+  let monthSales = 0;
+  let monthProfit = 0;
+  let monthPurchase = 0;
+  let monthExpense = 0;
+
+  sales.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      const salesAmount =
+        Number(r[8]) || 0;
+
+      const profit =
+        Number(r[10]) || 0;
+
+      if (
+        sameDate_(date, today)
+      ) {
+
+        todaySales +=
+          salesAmount;
+
+        todayProfit +=
+          profit;
+
+      }
+
+      if (
+        sameMonth_(date, today)
+      ) {
+
+        monthSales +=
+          salesAmount;
+
+        monthProfit +=
+          profit;
+
+      }
+
+    }
+  );
+
+  purchases.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      const amount =
+        Number(r[7]) || 0;
+
+      if (
+        sameDate_(date, today)
+      ) {
+        todayPurchase +=
+          amount;
+      }
+
+      if (
+        sameMonth_(date, today)
+      ) {
+        monthPurchase +=
+          amount;
+      }
+
+    }
+  );
+
+  expenses.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      const amount =
+        Number(r[3]) || 0;
+
+      if (
+        sameDate_(date, today)
+      ) {
+        todayExpense +=
+          amount;
+      }
+
+      if (
+        sameMonth_(date, today)
+      ) {
+        monthExpense +=
+          amount;
+      }
+
+    }
+  );
+
+  const lowStock =
+    products.filter(
+      function(p) {
+        return (
+          p.currentStock &lt;=
+          p.reorderLevel
+        );
+      }
+    );
+
+  const stockValue =
+    products.reduce(
+      function(sum, p) {
+        return sum +
+          (Number(p.stockValue) || 0);
+      },
+      0
+    );
+
+  return {
+
+    todaySales: todaySales,
+    todayProfit: todayProfit,
+    todayPurchase: todayPurchase,
+    todayExpense: todayExpense,
+
+    monthSales: monthSales,
+    monthProfit: monthProfit,
+    monthPurchase: monthPurchase,
+    monthExpense: monthExpense,
+
+    monthNetProfit:
+      monthProfit -
+      monthExpense,
+
+    stockValue: stockValue,
+
+    productCount:
+      products.length,
+
+    lowStockCount:
+      lowStock.length,
+
+    lowStock:
+      lowStock,
+
+    dailyChart:
+      getLast7DaysChart_(),
+
+    monthlyChart:
+      getLast6MonthsChart_(),
+
+    recentSales:
+      getRecentSales_()
+
+  };
+
+}
+
+
+/* ============================================================
+   LAST 7 DAYS CHART
+============================================================ */
+
+function getLast7DaysChart_() {
+
+  const ss =
+    getSpreadsheet_();
+
+  const sales =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      )
+    );
+
+  const result = [];
+
+  for (
+    let i = 6;
+    i &gt;= 0;
+    i--
+  ) {
+
+    const date =
+      new Date();
+
+    date.setDate(
+      date.getDate() - i
+    );
+
+    let salesAmount = 0;
+    let profit = 0;
+
+    sales.forEach(
+      function(r) {
+
+        const d =
+          normalizeDate_(r[1]);
+
+        if (
+          sameDate_(d, date)
+        ) {
+
+          salesAmount +=
+            Number(r[8]) || 0;
+
+          profit +=
+            Number(r[10]) || 0;
+
+        }
+
+      }
+    );
+
+    result.push({
+      label:
+        Utilities.formatDate(
+          date,
+          Session.getScriptTimeZone(),
+          'dd/MM'
+        ),
+      sales: salesAmount,
+      profit: profit
+    });
+
+  }
+
+  return result;
+
+}
+
+
+/* ============================================================
+   LAST 6 MONTHS CHART
+============================================================ */
+
+function getLast6MonthsChart_() {
+
+  const ss =
+    getSpreadsheet_();
+
+  const sales =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      )
+    );
+
+  const result = [];
+
+  for (
+    let i = 5;
+    i &gt;= 0;
+    i--
+  ) {
+
+    const date =
+      new Date();
+
+    date.setMonth(
+      date.getMonth() - i
+    );
+
+    let salesAmount = 0;
+    let profit = 0;
+
+    sales.forEach(
+      function(r) {
+
+        const d =
+          normalizeDate_(r[1]);
+
+        if (
+          sameMonth_(d, date)
+        ) {
+
+          salesAmount +=
+            Number(r[8]) || 0;
+
+          profit +=
+            Number(r[10]) || 0;
+
+        }
+
+      }
+    );
+
+    result.push({
+      label:
+        Utilities.formatDate(
+          date,
+          Session.getScriptTimeZone(),
+          'MMM'
+        ),
+      sales: salesAmount,
+      profit: profit
+    });
+
+  }
+
+  return result;
+
+}
+
+
+/* ============================================================
+   RECENT SALES
+============================================================ */
+
+function getRecentSales_() {
+
+  const ss =
+    getSpreadsheet_();
+
+  const rows =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      )
+    );
+
+  rows.sort(
+    function(a, b) {
+
+      return (
+        new Date(b[12]) -
+        new Date(a[12])
+      );
+
+    }
+  );
+
+  return rows
+    .slice(0, 10)
+    .map(
+      function(r) {
+
+        return {
+          invoiceId: r[0],
+          date:
+            formatDate_(r[1]),
+          customer: r[2] || 'Walk-in',
+          product: r[4],
+          quantity: r[5],
+          amount: r[8],
+          profit: r[10]
+        };
+
+      }
+    );
+
+}
+
+
+/* ============================================================
+   REPORT
+============================================================ */
+
+function getReport(
+  startDate,
+  endDate
+) {
+
+  ensureSystem_();
+
+  const ss =
+    getSpreadsheet_();
+
+  const start =
+    parseDate_(startDate);
+
+  const end =
+    parseDate_(endDate);
+
+  end.setHours(
+    23,
+    59,
+    59,
+    999
+  );
+
+  const sales =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.SALES
+      )
+    );
+
+  const purchases =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.PURCHASES
+      )
+    );
+
+  const expenses =
+    readData_(
+      ss.getSheetByName(
+        CONFIG.SHEETS.EXPENSES
+      )
+    );
+
+  let totalSales = 0;
+  let totalProfit = 0;
+  let totalPurchase = 0;
+  let totalExpense = 0;
+
+  const productMap = {};
+
+  sales.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      if (
+        date &gt;= start &amp;&amp;
+        date &lt;= end
+      ) {
+
+        const name =
+          r[4];
+
+        const qty =
+          Number(r[5]) || 0;
+
+        const amount =
+          Number(r[8]) || 0;
+
+        const profit =
+          Number(r[10]) || 0;
+
+        totalSales +=
+          amount;
+
+        totalProfit +=
+          profit;
+
+        if (!productMap[name]) {
+
+          productMap[name] = {
+            product: name,
+            quantity: 0,
+            sales: 0,
+            profit: 0
+          };
+
+        }
+
+        productMap[name].quantity +=
+          qty;
+
+        productMap[name].sales +=
+          amount;
+
+        productMap[name].profit +=
+          profit;
+
+      }
+
+    }
+  );
+
+  purchases.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      if (
+        date &gt;= start &amp;&amp;
+        date &lt;= end
+      ) {
+
+        totalPurchase +=
+          Number(r[7]) || 0;
+
+      }
+
+    }
+  );
+
+  expenses.forEach(
+    function(r) {
+
+      const date =
+        normalizeDate_(r[1]);
+
+      if (
+        date &gt;= start &amp;&amp;
+        date &lt;= end
+      ) {
+
+        totalExpense +=
+          Number(r[3]) || 0;
+
+      }
+
+    }
+  );
+
+  return {
+
+    totalSales: totalSales,
+    totalProfit: totalProfit,
+    totalPurchase: totalPurchase,
+    totalExpense: totalExpense,
+
+    netProfit:
+      totalProfit -
+      totalExpense,
+
+    products:
+      Object.keys(productMap)
+        .map(
+          function(k) {
+            return productMap[k];
+          }
+        )
+        .sort(
+          function(a, b) {
+            return b.sales - a.sales;
+          }
+        )
+
+  };
+
+}
+
+
+/* ============================================================
+   READ DATA
+============================================================ */
+
+function readData_(sheet) {
+
+  if (!sheet) {
+    return [];
+  }
+
+  const lastRow =
+    sheet.getLastRow();
+
+  const lastColumn =
+    sheet.getLastColumn();
+
+  if (
+    lastRow &lt; 2 ||
+    lastColumn &lt; 1
+  ) {
+    return [];
+  }
+
+  return sheet
+    .getRange(
+      2,
+      1,
+      lastRow - 1,
+      lastColumn
+    )
+    .getValues();
+
+}
+
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+
+function generateTransactionId_(prefix) {
+
+  const now =
+    new Date();
+
+  const stamp =
+    Utilities.formatDate(
+      now,
+      Session.getScriptTimeZone(),
+      'yyyyMMddHHmmss'
+    );
+
+  const random =
+    Math.floor(
+      Math.random() * 1000
+    )
+      .toString()
+      .padStart(3, '0');
+
+  return (
+    prefix +
+    '-' +
+    stamp +
+    '-' +
+    random
+  );
+
+}
+
+
+function parseDate_(value) {
+
+  if (!value) {
+    return new Date();
+  }
+
+  if (value instanceof Date) {
+    return value;
+  }
+
+  const parts =
+    String(value).split('-');
+
+  if (
+    parts.length === 3
+  ) {
+
+    return new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+  }
+
+  return new Date(value);
+
+}
+
+
+function normalizeDate_(value) {
+
+  if (value instanceof Date) {
+    return value;
+  }
+
+  const d =
+    new Date(value);
+
+  if (isNaN(d.getTime())) {
+    return new Date(0);
+  }
+
+  return d;
+
+}
+
+
+function sameDate_(a, b) {
+
+  return (
+    a.getFullYear() === b.getFullYear() &amp;&amp;
+    a.getMonth() === b.getMonth() &amp;&amp;
+    a.getDate() === b.getDate()
+  );
+
+}
+
+
+function sameMonth_(a, b) {
+
+  return (
+    a.getFullYear() === b.getFullYear() &amp;&amp;
+    a.getMonth() === b.getMonth()
+  );
+
+}
+
+
+function formatDate_(value) {
+
+  return Utilities.formatDate(
+    normalizeDate_(value),
+    Session.getScriptTimeZone(),
+    'dd-MMM-yyyy'
+  );
+
+}
+
+
+function escapeHtml_(text) {
+
+  return String(text)
+    .replace(/&amp;/g, '&amp;amp;')
+    .replace(/&lt;/g, '&amp;lt;')
+    .replace(/&gt;/g, '&amp;gt;')
+    .replace(/"/g, '&amp;quot;')
+    .replace(/'/g, '&amp;#039;');
+
+}
+
+
+/* ============================================================
+   WEB APP HTML
+============================================================ */
+
+function getWebAppHTML_() {
+
+  return `
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+
+&lt;head&gt;
+
+&lt;meta name="viewport"
+      content="width=device-width, initial-scale=1"&gt;
+
+&lt;style&gt;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Arial,
+    "Noto Sans Bengali",
+    sans-serif;
+
+  background: #f5f7fb;
+  color: #202124;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 240px;
+  background: #111827;
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 18px 12px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 10px 22px;
+}
+
+.logo small {
+  display: block;
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 5px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav button {
+  border: none;
+  background: transparent;
+  color: #d1d5db;
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.nav button:hover,
+.nav button.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* MAIN */
+
+.main {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+  padding: 24px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.pageTitle {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+/* CARDS */
+
+.cards {
+  display: grid;
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow:
+    0 2px 8px
+    rgba(0,0,0,0.06);
+}
+
+.statTitle {
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* GRID */
+
+.grid2 {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* TABLE */
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f3f4f6;
+  text-align: left;
+  padding: 11px;
+  font-size: 12px;
+}
+
+td {
+  padding: 11px;
+  border-bottom:
+    1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.badge.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge.low {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.out {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* FORM */
+
+.formGrid {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 14px;
+}
+
+.formGroup {
+  margin-bottom: 4px;
+}
+
+.formGroup.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: white;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 80px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.btn {
+  border: none;
+  border-radius: 7px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.btnPrimary {
+  background: #2563eb;
+  color: white;
+}
+
+.btnSuccess {
+  background: #16a34a;
+  color: white;
+}
+
+.btnDanger {
+  background: #dc2626;
+  color: white;
+}
+
+.btnGray {
+  background: #6b7280;
+  color: white;
+}
+
+.btnSmall {
+  padding: 6px 9px;
+  font-size: 11px;
+}
+
+/* CART */
+
+.cartTotal {
+  text-align: right;
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.removeBtn {
+  color: #dc2626;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* CHART */
+
+.chartBox {
+  position: relative;
+  height: 280px;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ALERT */
+
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.alertLow {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.alertOut {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  background: #111827;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 8px;
+  display: none;
+  z-index: 999;
+  box-shadow:
+    0 4px 20px
+    rgba(0,0,0,.2);
+}
+
+/* LOADING */
+
+.loading {
+  padding: 30px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+  .sidebar {
+    width: 210px;
+  }
+
+  .main {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+  }
+
+  .cards {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+@media(max-width: 700px) {
+
+  .sidebar {
+    transform:
+      translateX(-100%);
+    transition:
+      transform .2s;
+  }
+
+  .sidebar.open {
+    transform:
+      translateX(0);
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+  }
+
+  .mobileMenu {
+    display: block;
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  .cards {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .grid2 {
+    grid-template-columns:
+      1fr;
+  }
+
+  .formGrid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .formGroup.full {
+    grid-column: auto;
+  }
+
+}
+
+@media(max-width: 450px) {
+
+  .cards {
+    grid-template-columns:
+      1fr;
+  }
+
+  .statValue {
+    font-size: 22px;
+  }
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;div class="app"&gt;
+
+  &lt;aside
+    class="sidebar"
+    id="sidebar"&gt;
+
+    &lt;div class="logo"&gt;
+      Shop Management
+      &lt;small&gt;Inventory &amp; Accounts&lt;/small&gt;
+    &lt;/div&gt;
+
+    &lt;div class="nav"&gt;
+
+      &lt;button
+        data-page="dashboard"
+        onclick="navigate('dashboard')"&gt;
+        Dashboard
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="sales"
+        onclick="navigate('sales')"&gt;
+        Sales / POS
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="purchase"
+        onclick="navigate('purchase')"&gt;
+        Purchase
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="products"
+        onclick="navigate('products')"&gt;
+        Products
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="inventory"
+        onclick="navigate('inventory')"&gt;
+        Inventory
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="expenses"
+        onclick="navigate('expenses')"&gt;
+        Expenses
+      &lt;/button&gt;
+
+      &lt;button
+        data-page="reports"
+        onclick="navigate('reports')"&gt;
+        Reports
+      &lt;/button&gt;
+
+    &lt;/div&gt;
+
+  &lt;/aside&gt;
+
+  &lt;main class="main"&gt;
+
+    &lt;div class="topbar"&gt;
+
+      &lt;div
+        class="pageTitle"
+        id="pageTitle"&gt;
+        Dashboard
+      &lt;/div&gt;
+
+      &lt;button
+        class="mobileMenu"
+        onclick="toggleSidebar()"&gt;
+        Menu
+      &lt;/button&gt;
+
+    &lt;/div&gt;
+
+    &lt;div id="content"&gt;
+      &lt;div class="loading"&gt;
+        Loading...
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/main&gt;
+
+&lt;/div&gt;
+
+&lt;div
+  class="toast"
+  id="toast"&gt;
+&lt;/div&gt;
+
+
+&lt;script&gt;
+
+/* ==========================================================
+   APP STATE
+========================================================== */
+
+let state = {
+  products: [],
+  dashboard: null,
+  cart: []
+};
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function() {
+
+    loadDashboard();
+
+  }
+);
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
+
+function navigate(page) {
+
+  document
+    .querySelectorAll('.nav button')
+    .forEach(function(btn) {
+
+      btn.classList.toggle(
+        'active',
+        btn.dataset.page === page
+      );
+
+    });
+
+  document
+    .getElementById('sidebar')
+    .classList.remove('open');
+
+  if (page === 'dashboard') {
+    loadDashboard();
+  }
+
+  if (page === 'sales') {
+    loadSalesPage();
+  }
+
+  if (page === 'purchase') {
+    loadPurchasePage();
+  }
+
+  if (page === 'products') {
+    loadProductsPage();
+  }
+
+  if (page === 'inventory') {
+    loadInventoryPage();
+  }
+
+  if (page === 'expenses') {
+    loadExpensePage();
+  }
+
+  if (page === 'reports') {
+    loadReportsPage();
+  }
+
+}
+
+
+function toggleSidebar() {
+
+  document
+    .getElementById('sidebar')
+    .classList.toggle('open');
+
+}
+
+
+/* ==========================================================
+   SERVER CALL
+========================================================== */
+
+function callServer(
+  functionName,
+  args,
+  success,
+  failure
+) {
+
+  let runner =
+    google.script.run
+      .withSuccessHandler(
+        success
+      )
+      .withFailureHandler(
+        failure ||
+        function(error) {
+          showToast(
+            error.message,
+            true
+          );
+        }
+      );
+
+  if (args === undefined) {
+
+    runner[functionName]();
+
+  } else {
+
+    runner[functionName](args);
+
+  }
+
+}
+
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+function showToast(
+  message,
+  error
+) {
+
+  const toast =
+    document.getElementById(
+      'toast'
+    );
+
+  toast.innerHTML =
+    message;
+
+  toast.style.display =
+    'block';
+
+  toast.style.background =
+    error
+      ? '#dc2626'
+      : '#111827';
+
+  setTimeout(
+    function() {
+      toast.style.display =
+        'none';
+    },
+    3500
+  );
+
+}
+
+
+/* ==========================================================
+   MONEY
+========================================================== */
+
+function money(value) {
+
+  return '৳ ' +
+    Number(value || 0)
+      .toLocaleString(
+        'en-BD',
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      );
+
+}
+
+
+/* ==========================================================
+   DASHBOARD
+========================================================== */
+
+function loadDashboard() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Dashboard';
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+    '&lt;div class="loading"&gt;Loading dashboard...&lt;/div&gt;';
+
+  callServer(
+    'getDashboardData',
+    undefined,
+    function(data) {
+
+      state.dashboard =
+        data;
+
+      renderDashboard(data);
+
+    }
+  );
+
+}
+
+
+function renderDashboard(data) {
+
+  const lowStock =
+    data.lowStock || [];
+
+  let lowHtml =
+    '';
+
+  if (
+    lowStock.length === 0
+  ) {
+
+    lowHtml =
+      '&lt;div class="alert alertLow"&gt;' +
+      'No low stock products.' +
+      '&lt;/div&gt;';
+
+  } else {
+
+    lowHtml =
+      lowStock
+        .map(function(p) {
+
+          const out =
+            p.currentStock &lt;= 0;
+
+          return (
+            '&lt;div class="alert ' +
+            (out
+              ? 'alertOut'
+              : 'alertLow') +
+            '"&gt;' +
+            '&lt;b&gt;' +
+            p.name +
+            '&lt;/b&gt; — Current: ' +
+            p.currentStock +
+            ' ' +
+            p.unit +
+            ' | Reorder: ' +
+            p.reorderLevel +
+            ' ' +
+            p.unit +
+            '&lt;/div&gt;'
+          );
+
+        })
+        .join('');
+
+  }
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="cards"&gt;' +
+
+      statCard(
+        'Today Sales',
+        money(data.todaySales)
+      ) +
+
+      statCard(
+        'Today Profit',
+        money(data.todayProfit)
+      ) +
+
+      statCard(
+        'Monthly Sales',
+        money(data.monthSales)
+      ) +
+
+      statCard(
+        'Monthly Net Profit',
+        money(data.monthNetProfit)
+      ) +
+
+      statCard(
+        'Stock Value',
+        money(data.stockValue)
+      ) +
+
+      statCard(
+        'Monthly Purchase',
+        money(data.monthPurchase)
+      ) +
+
+      statCard(
+        'Monthly Expense',
+        money(data.monthExpense)
+      ) +
+
+      statCard(
+        'Low Stock',
+        data.lowStockCount
+      ) +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div class="grid2"&gt;' +
+
+      '&lt;div class="card"&gt;' +
+        '&lt;div class="sectionTitle"&gt;' +
+        'Sales &amp; Profit — Last 7 Days' +
+        '&lt;/div&gt;' +
+        '&lt;div class="chartBox"&gt;' +
+          '&lt;canvas id="dailyChart"&gt;&lt;/canvas&gt;' +
+        '&lt;/div&gt;' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="card"&gt;' +
+        '&lt;div class="sectionTitle"&gt;' +
+        'Sales &amp; Profit — Last 6 Months' +
+        '&lt;/div&gt;' +
+        '&lt;div class="chartBox"&gt;' +
+          '&lt;canvas id="monthlyChart"&gt;&lt;/canvas&gt;' +
+        '&lt;/div&gt;' +
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div class="grid2"&gt;' +
+
+      '&lt;div class="card"&gt;' +
+        '&lt;div class="sectionTitle"&gt;' +
+        'Low Stock Alert' +
+        '&lt;/div&gt;' +
+        lowHtml +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="card"&gt;' +
+        '&lt;div class="sectionTitle"&gt;' +
+        'Recent Sales' +
+        '&lt;/div&gt;' +
+        renderRecentSales(
+          data.recentSales || []
+        ) +
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+  drawChart(
+    'dailyChart',
+    data.dailyChart,
+    'Daily'
+  );
+
+  drawChart(
+    'monthlyChart',
+    data.monthlyChart,
+    'Monthly'
+  );
+
+}
+
+
+function statCard(
+  title,
+  value
+) {
+
+  return (
+    '&lt;div class="card"&gt;' +
+      '&lt;div class="statTitle"&gt;' +
+      title +
+      '&lt;/div&gt;' +
+      '&lt;div class="statValue"&gt;' +
+      value +
+      '&lt;/div&gt;' +
+    '&lt;/div&gt;'
+  );
+
+}
+
+
+function renderRecentSales(rows) {
+
+  if (!rows.length) {
+    return '&lt;p&gt;No sales yet.&lt;/p&gt;';
+  }
+
+  let html =
+    '&lt;div class="tableWrap"&gt;' +
+    '&lt;table&gt;' +
+    '&lt;thead&gt;' +
+    '&lt;tr&gt;' +
+    '&lt;th&gt;Date&lt;/th&gt;' +
+    '&lt;th&gt;Product&lt;/th&gt;' +
+    '&lt;th&gt;Amount&lt;/th&gt;' +
+    '&lt;/tr&gt;' +
+    '&lt;/thead&gt;' +
+    '&lt;tbody&gt;';
+
+  rows.forEach(
+    function(r) {
+
+      html +=
+        '&lt;tr&gt;' +
+        '&lt;td&gt;' +
+        r.date +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        r.product +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(r.amount) +
+        '&lt;/td&gt;' +
+        '&lt;/tr&gt;';
+
+    }
+  );
+
+  html +=
+    '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';
+
+  return html;
+
+}
+
+
+/* ==========================================================
+   SIMPLE CANVAS CHART
+========================================================== */
+
+function drawChart(
+  canvasId,
+  data,
+  type
+) {
+
+  const canvas =
+    document.getElementById(
+      canvasId
+    );
+
+  if (!canvas || !data) {
+    return;
+  }
+
+  const rect =
+    canvas.parentElement
+      .getBoundingClientRect();
+
+  const ratio =
+    window.devicePixelRatio || 1;
+
+  canvas.width =
+    rect.width * ratio;
+
+  canvas.height =
+    rect.height * ratio;
+
+  const ctx =
+    canvas.getContext('2d');
+
+  ctx.scale(
+    ratio,
+    ratio
+  );
+
+  const width =
+    rect.width;
+
+  const height =
+    rect.height;
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  const max =
+    Math.max.apply(
+      null,
+      data.map(function(x) {
+        return Math.max(
+          x.sales,
+          x.profit
+        );
+      })
+    ) || 1;
+
+  const left = 40;
+  const right = 10;
+  const top = 20;
+  const bottom = 30;
+
+  const chartWidth =
+    width -
+    left -
+    right;
+
+  const chartHeight =
+    height -
+    top -
+    bottom;
+
+  ctx.strokeStyle =
+    '#e5e7eb';
+
+  ctx.lineWidth =
+    1;
+
+  for (
+    let i = 0;
+    i &lt;= 4;
+    i++
+  ) {
+
+    const y =
+      top +
+      chartHeight *
+      i / 4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      left,
+      y
+    );
+
+    ctx.lineTo(
+      width - right,
+      y
+    );
+
+    ctx.stroke();
+
+  }
+
+  const gap =
+    chartWidth /
+    data.length;
+
+  data.forEach(
+    function(item, index) {
+
+      const x =
+        left +
+        gap * index +
+        gap / 2;
+
+      const salesHeight =
+        (item.sales / max) *
+        chartHeight;
+
+      const profitHeight =
+        (item.profit / max) *
+        chartHeight;
+
+      const barWidth =
+        Math.max(
+          8,
+          gap / 5
+        );
+
+      ctx.fillStyle =
+        '#2563eb';
+
+      ctx.fillRect(
+        x - barWidth,
+        top +
+        chartHeight -
+        salesHeight,
+        barWidth,
+        salesHeight
+      );
+
+      ctx.fillStyle =
+        '#16a34a';
+
+      ctx.fillRect(
+        x,
+        top +
+        chartHeight -
+        profitHeight,
+        barWidth,
+        profitHeight
+      );
+
+      ctx.fillStyle =
+        '#6b7280';
+
+      ctx.font =
+        '11px Arial';
+
+      ctx.textAlign =
+        'center';
+
+      ctx.fillText(
+        item.label,
+        x,
+        height - 8
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   SALES / POS
+========================================================== */
+
+function loadSalesPage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Sales / POS';
+
+  callServer(
+    'getProducts',
+    undefined,
+    function(products) {
+
+      state.products =
+        products;
+
+      renderSalesPage();
+
+    }
+  );
+
+}
+
+
+function renderSalesPage() {
+
+  state.cart =
+    state.cart || [];
+
+  let options =
+    '&lt;option value=""&gt;Select Product&lt;/option&gt;';
+
+  state.products
+    .filter(function(p) {
+      return p.active;
+    })
+    .forEach(
+      function(p) {
+
+        options +=
+          '&lt;option value="' +
+          p.id +
+          '"&gt;' +
+          p.name +
+          ' — Stock: ' +
+          p.currentStock +
+          ' ' +
+          p.unit +
+          '&lt;/option&gt;';
+
+      }
+    );
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="grid2"&gt;' +
+
+      '&lt;div class="card"&gt;' +
+
+        '&lt;div class="sectionTitle"&gt;' +
+        'New Sale' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGrid"&gt;' +
+
+          '&lt;div class="formGroup"&gt;' +
+            '&lt;label&gt;Date&lt;/label&gt;' +
+            '&lt;input ' +
+              'type="date" ' +
+              'id="saleDate" ' +
+              'value="' +
+              today() +
+            '"&gt;' +
+          '&lt;/div&gt;' +
+
+          '&lt;div class="formGroup"&gt;' +
+            '&lt;label&gt;Customer&lt;/label&gt;' +
+            '&lt;input ' +
+              'id="saleCustomer" ' +
+              'placeholder="Walk-in customer"&gt;' +
+          '&lt;/div&gt;' +
+
+          '&lt;div class="formGroup full"&gt;' +
+            '&lt;label&gt;Product&lt;/label&gt;' +
+            '&lt;select id="saleProduct"&gt;' +
+              options +
+            '&lt;/select&gt;' +
+          '&lt;/div&gt;' +
+
+          '&lt;div class="formGroup"&gt;' +
+            '&lt;label&gt;Quantity&lt;/label&gt;' +
+            '&lt;input ' +
+              'type="number" ' +
+              'id="saleQty" ' +
+              'min="0.01" ' +
+              'step="0.01"&gt;' +
+          '&lt;/div&gt;' +
+
+          '&lt;div class="formGroup"&gt;' +
+            '&lt;label&gt;Selling Price&lt;/label&gt;' +
+            '&lt;input ' +
+              'type="number" ' +
+              'id="salePrice" ' +
+              'min="0" ' +
+              'step="0.01"&gt;' +
+          '&lt;/div&gt;' +
+
+          '&lt;div class="formGroup full"&gt;' +
+            '&lt;button ' +
+              'class="btn btnPrimary" ' +
+              'onclick="addToCart()"&gt;' +
+              'Add to Cart' +
+            '&lt;/button&gt;' +
+          '&lt;/div&gt;' +
+
+        '&lt;/div&gt;' +
+
+      '&lt;/div&gt;' +
+
+      '&lt;div class="card"&gt;' +
+
+        '&lt;div class="sectionTitle"&gt;' +
+        'Current Invoice' +
+        '&lt;/div&gt;' +
+
+        '&lt;div id="cartArea"&gt;' +
+          renderCart() +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Note&lt;/label&gt;' +
+          '&lt;textarea id="saleNote"&gt;&lt;/textarea&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;button ' +
+          'class="btn btnSuccess" ' +
+          'style="width:100%;margin-top:10px" ' +
+          'onclick="completeSale()"&gt;' +
+          'Complete Sale' +
+        '&lt;/button&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+function renderCart() {
+
+  if (!state.cart.length) {
+
+    return (
+      '&lt;p style="color:#6b7280"&gt;' +
+      'No product added yet.' +
+      '&lt;/p&gt;'
+    );
+
+  }
+
+  let total =
+    0;
+
+  let html =
+    '&lt;div class="tableWrap"&gt;' +
+    '&lt;table&gt;' +
+    '&lt;thead&gt;' +
+    '&lt;tr&gt;' +
+    '&lt;th&gt;Product&lt;/th&gt;' +
+    '&lt;th&gt;Qty&lt;/th&gt;' +
+    '&lt;th&gt;Price&lt;/th&gt;' +
+    '&lt;th&gt;Total&lt;/th&gt;' +
+    '&lt;th&gt;&lt;/th&gt;' +
+    '&lt;/tr&gt;' +
+    '&lt;/thead&gt;' +
+    '&lt;tbody&gt;';
+
+  state.cart.forEach(
+    function(item, index) {
+
+      const amount =
+        item.quantity *
+        item.unitPrice;
+
+      total += amount;
+
+      html +=
+        '&lt;tr&gt;' +
+        '&lt;td&gt;' +
+        item.name +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        item.quantity +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(item.unitPrice) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(amount) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        '&lt;span ' +
+        'class="removeBtn" ' +
+        'onclick="removeCartItem(' +
+        index +
+        ')"&gt;' +
+        'Remove' +
+        '&lt;/span&gt;' +
+        '&lt;/td&gt;' +
+        '&lt;/tr&gt;';
+
+    }
+  );
+
+  html +=
+    '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;' +
+
+    '&lt;div class="cartTotal"&gt;' +
+    'Total: ' +
+    money(total) +
+    '&lt;/div&gt;';
+
+  return html;
+
+}
+
+
+function addToCart() {
+
+  const productId =
+    document.getElementById(
+      'saleProduct'
+    ).value;
+
+  const quantity =
+    Number(
+      document.getElementById(
+        'saleQty'
+      ).value
+    );
+
+  const unitPrice =
+    Number(
+      document.getElementById(
+        'salePrice'
+      ).value
+    );
+
+  const product =
+    state.products.find(
+      function(p) {
+        return p.id === productId;
+      }
+    );
+
+  if (!product) {
+    showToast(
+      'Please select a product.',
+      true
+    );
+    return;
+  }
+
+  if (
+    !quantity ||
+    quantity &lt;= 0
+  ) {
+    showToast(
+      'Enter a valid quantity.',
+      true
+    );
+    return;
+  }
+
+  if (
+    quantity &gt;
+    product.currentStock
+  ) {
+    showToast(
+      'Not enough stock. Available: ' +
+      product.currentStock +
+      ' ' +
+      product.unit,
+      true
+    );
+    return;
+  }
+
+  if (
+    !isFinite(unitPrice) ||
+    unitPrice &lt; 0
+  ) {
+    showToast(
+      'Enter a valid selling price.',
+      true
+    );
+    return;
+  }
+
+  const existing =
+    state.cart.find(
+      function(x) {
+        return x.productId === productId;
+      }
+    );
+
+  if (existing) {
+
+    if (
+      existing.quantity +
+      quantity &gt;
+      product.currentStock
+    ) {
+
+      showToast(
+        'Cart quantity exceeds available stock.',
+        true
+      );
+
+      return;
+
+    }
+
+    existing.quantity +=
+      quantity;
+
+    existing.unitPrice =
+      unitPrice;
+
+  } else {
+
+    state.cart.push({
+      productId:
+        product.id,
+      name:
+        product.name,
+      unit:
+        product.unit,
+      quantity:
+        quantity,
+      unitPrice:
+        unitPrice
+    });
+
+  }
+
+  renderSalesPage();
+
+}
+
+
+function removeCartItem(index) {
+
+  state.cart.splice(
+    index,
+    1
+  );
+
+  renderSalesPage();
+
+}
+
+
+function completeSale() {
+
+  if (!state.cart.length) {
+
+    showToast(
+      'Cart is empty.',
+      true
+    );
+
+    return;
+
+  }
+
+  const data = {
+
+    date:
+      document.getElementById(
+        'saleDate'
+      ).value,
+
+    customer:
+      document.getElementById(
+        'saleCustomer'
+      ).value,
+
+    note:
+      document.getElementById(
+        'saleNote'
+      ).value,
+
+    items:
+      state.cart.map(
+        function(item) {
+
+          return {
+            productId:
+              item.productId,
+            quantity:
+              item.quantity,
+            unitPrice:
+              item.unitPrice
+          };
+
+        }
+      )
+
+  };
+
+  callServer(
+    'saveSale',
+    data,
+    function(result) {
+
+      showToast(
+        'Sale saved. Invoice: ' +
+        result.invoiceId
+      );
+
+      state.cart =
+        [];
+
+      loadSalesPage();
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   PURCHASE
+========================================================== */
+
+function loadPurchasePage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Purchase Entry';
+
+  callServer(
+    'getProducts',
+    undefined,
+    function(products) {
+
+      state.products =
+        products;
+
+      renderPurchasePage();
+
+    }
+  );
+
+}
+
+
+function renderPurchasePage() {
+
+  let options =
+    '&lt;option value=""&gt;Select Product&lt;/option&gt;';
+
+  state.products
+    .filter(function(p) {
+      return p.active;
+    })
+    .forEach(
+      function(p) {
+
+        options +=
+          '&lt;option value="' +
+          p.id +
+          '"&gt;' +
+          p.name +
+          '&lt;/option&gt;';
+
+      }
+    );
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'New Purchase' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="formGrid"&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Date&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="date" ' +
+            'id="purchaseDate" ' +
+            'value="' +
+            today() +
+          '"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Supplier&lt;/label&gt;' +
+          '&lt;input ' +
+            'id="supplierName"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Product&lt;/label&gt;' +
+          '&lt;select ' +
+            'id="purchaseProduct" ' +
+            'onchange="setPurchaseCost()"&gt;' +
+            options +
+          '&lt;/select&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Quantity&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="purchaseQty" ' +
+            'min="0.01" ' +
+            'step="0.01"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Unit Cost&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="purchaseCost" ' +
+            'min="0" ' +
+            'step="0.01"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup full"&gt;' +
+          '&lt;label&gt;Note&lt;/label&gt;' +
+          '&lt;textarea id="purchaseNote"&gt;&lt;/textarea&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup full"&gt;' +
+          '&lt;button ' +
+            'class="btn btnSuccess" ' +
+            'onclick="savePurchaseForm()"&gt;' +
+            'Save Purchase' +
+          '&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+function setPurchaseCost() {
+
+  const id =
+    document.getElementById(
+      'purchaseProduct'
+    ).value;
+
+  const product =
+    state.products.find(
+      function(p) {
+        return p.id === id;
+      }
+    );
+
+  if (product) {
+
+    document.getElementById(
+      'purchaseCost'
+    ).value =
+      product.purchasePrice;
+
+  }
+
+}
+
+
+function savePurchaseForm() {
+
+  const data = {
+
+    date:
+      document.getElementById(
+        'purchaseDate'
+      ).value,
+
+    supplier:
+      document.getElementById(
+        'supplierName'
+      ).value,
+
+    productId:
+      document.getElementById(
+        'purchaseProduct'
+      ).value,
+
+    quantity:
+      document.getElementById(
+        'purchaseQty'
+      ).value,
+
+    unitCost:
+      document.getElementById(
+        'purchaseCost'
+      ).value,
+
+    note:
+      document.getElementById(
+        'purchaseNote'
+      ).value
+
+  };
+
+  callServer(
+    'savePurchase',
+    data,
+    function(result) {
+
+      showToast(
+        'Purchase saved successfully. Total: ' +
+        money(result.total)
+      );
+
+      loadPurchasePage();
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   PRODUCTS
+========================================================== */
+
+function loadProductsPage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Product Management';
+
+  callServer(
+    'getProducts',
+    undefined,
+    function(products) {
+
+      state.products =
+        products;
+
+      renderProductsPage();
+
+    }
+  );
+
+}
+
+
+function renderProductsPage() {
+
+  let rows =
+    '';
+
+  state.products.forEach(
+    function(p) {
+
+      let badge =
+        '&lt;span class="badge ok"&gt;OK&lt;/span&gt;';
+
+      if (
+        p.status ===
+        'LOW STOCK'
+      ) {
+        badge =
+          '&lt;span class="badge low"&gt;LOW STOCK&lt;/span&gt;';
+      }
+
+      if (
+        p.status ===
+        'OUT OF STOCK'
+      ) {
+        badge =
+          '&lt;span class="badge out"&gt;OUT OF STOCK&lt;/span&gt;';
+      }
+
+      rows +=
+        '&lt;tr&gt;' +
+        '&lt;td&gt;' +
+        p.id +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.name +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.category +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.unit +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(p.purchasePrice) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(p.salePrice) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.currentStock +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        badge +
+        '&lt;/td&gt;' +
+        '&lt;/tr&gt;';
+
+    }
+  );
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Add New Product' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="formGrid"&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Product Name&lt;/label&gt;' +
+          '&lt;input id="newProductName"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Category&lt;/label&gt;' +
+          '&lt;input ' +
+            'id="newProductCategory" ' +
+            'value="General"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Unit&lt;/label&gt;' +
+          '&lt;select id="newProductUnit"&gt;' +
+            '&lt;option&gt;Pcs&lt;/option&gt;' +
+            '&lt;option&gt;Kg&lt;/option&gt;' +
+            '&lt;option&gt;Liter&lt;/option&gt;' +
+            '&lt;option&gt;Box&lt;/option&gt;' +
+            '&lt;option&gt;Pack&lt;/option&gt;' +
+            '&lt;option&gt;Dozen&lt;/option&gt;' +
+          '&lt;/select&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Purchase Price&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="newProductPurchase"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Sale Price&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="newProductSale"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Opening Stock&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="newProductOpening"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Reorder Level&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="newProductReorder"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;button ' +
+            'class="btn btnPrimary" ' +
+            'onclick="addProductForm()"&gt;' +
+            'Add Product' +
+          '&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Product List' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="tableWrap"&gt;' +
+
+        '&lt;table&gt;' +
+
+          '&lt;thead&gt;' +
+            '&lt;tr&gt;' +
+              '&lt;th&gt;ID&lt;/th&gt;' +
+              '&lt;th&gt;Product&lt;/th&gt;' +
+              '&lt;th&gt;Category&lt;/th&gt;' +
+              '&lt;th&gt;Unit&lt;/th&gt;' +
+              '&lt;th&gt;Cost&lt;/th&gt;' +
+              '&lt;th&gt;Sale&lt;/th&gt;' +
+              '&lt;th&gt;Stock&lt;/th&gt;' +
+              '&lt;th&gt;Status&lt;/th&gt;' +
+            '&lt;/tr&gt;' +
+          '&lt;/thead&gt;' +
+
+          '&lt;tbody&gt;' +
+            rows +
+          '&lt;/tbody&gt;' +
+
+        '&lt;/table&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+function addProductForm() {
+
+  const data = {
+
+    name:
+      document.getElementById(
+        'newProductName'
+      ).value,
+
+    category:
+      document.getElementById(
+        'newProductCategory'
+      ).value,
+
+    unit:
+      document.getElementById(
+        'newProductUnit'
+      ).value,
+
+    purchasePrice:
+      document.getElementById(
+        'newProductPurchase'
+      ).value,
+
+    salePrice:
+      document.getElementById(
+        'newProductSale'
+      ).value,
+
+    openingStock:
+      document.getElementById(
+        'newProductOpening'
+      ).value,
+
+    reorderLevel:
+      document.getElementById(
+        'newProductReorder'
+      ).value
+
+  };
+
+  callServer(
+    'addProduct',
+    data,
+    function(result) {
+
+      showToast(
+        'Product added. ID: ' +
+        result.id
+      );
+
+      loadProductsPage();
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   INVENTORY
+========================================================== */
+
+function loadInventoryPage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Inventory';
+
+  callServer(
+    'getProducts',
+    undefined,
+    function(products) {
+
+      state.products =
+        products;
+
+      renderInventoryPage();
+
+    }
+  );
+
+}
+
+
+function renderInventoryPage() {
+
+  let rows =
+    '';
+
+  state.products.forEach(
+    function(p) {
+
+      let status =
+        '&lt;span class="badge ok"&gt;OK&lt;/span&gt;';
+
+      if (
+        p.status ===
+        'LOW STOCK'
+      ) {
+        status =
+          '&lt;span class="badge low"&gt;LOW STOCK&lt;/span&gt;';
+      }
+
+      if (
+        p.status ===
+        'OUT OF STOCK'
+      ) {
+        status =
+          '&lt;span class="badge out"&gt;OUT OF STOCK&lt;/span&gt;';
+      }
+
+      rows +=
+        '&lt;tr&gt;' +
+        '&lt;td&gt;' +
+        p.name +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.openingStock +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.currentStock +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(p.stockValue) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.reorderLevel +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        status +
+        '&lt;/td&gt;' +
+        '&lt;/tr&gt;';
+
+    }
+  );
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Current Inventory' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="tableWrap"&gt;' +
+
+        '&lt;table&gt;' +
+
+          '&lt;thead&gt;' +
+            '&lt;tr&gt;' +
+              '&lt;th&gt;Product&lt;/th&gt;' +
+              '&lt;th&gt;Opening&lt;/th&gt;' +
+              '&lt;th&gt;Current&lt;/th&gt;' +
+              '&lt;th&gt;Stock Value&lt;/th&gt;' +
+              '&lt;th&gt;Reorder&lt;/th&gt;' +
+              '&lt;th&gt;Status&lt;/th&gt;' +
+            '&lt;/tr&gt;' +
+          '&lt;/thead&gt;' +
+
+          '&lt;tbody&gt;' +
+            rows +
+          '&lt;/tbody&gt;' +
+
+        '&lt;/table&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+/* ==========================================================
+   EXPENSES
+========================================================== */
+
+function loadExpensePage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Expenses';
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Add Expense' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="formGrid"&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Date&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="date" ' +
+            'id="expenseDate" ' +
+            'value="' +
+            today() +
+          '"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Category&lt;/label&gt;' +
+          '&lt;input ' +
+            'id="expenseCategory" ' +
+            'placeholder="Rent, Electricity, Salary..."&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Amount&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="number" ' +
+            'id="expenseAmount" ' +
+            'min="0" ' +
+            'step="0.01"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Note&lt;/label&gt;' +
+          '&lt;input id="expenseNote"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;button ' +
+            'class="btn btnSuccess" ' +
+            'onclick="saveExpenseForm()"&gt;' +
+            'Save Expense' +
+          '&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+function saveExpenseForm() {
+
+  const data = {
+
+    date:
+      document.getElementById(
+        'expenseDate'
+      ).value,
+
+    category:
+      document.getElementById(
+        'expenseCategory'
+      ).value,
+
+    amount:
+      document.getElementById(
+        'expenseAmount'
+      ).value,
+
+    note:
+      document.getElementById(
+        'expenseNote'
+      ).value
+
+  };
+
+  callServer(
+    'saveExpense',
+    data,
+    function(result) {
+
+      showToast(
+        result.message
+      );
+
+      loadExpensePage();
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   REPORTS
+========================================================== */
+
+function loadReportsPage() {
+
+  document.getElementById(
+    'pageTitle'
+  ).innerText =
+    'Reports &amp; Profit / Loss';
+
+  document.getElementById(
+    'content'
+  ).innerHTML =
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Select Report Period' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="formGrid"&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;Start Date&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="date" ' +
+            'id="reportStart" ' +
+            'value="' +
+            firstDayOfMonth() +
+          '"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;label&gt;End Date&lt;/label&gt;' +
+          '&lt;input ' +
+            'type="date" ' +
+            'id="reportEnd" ' +
+            'value="' +
+            today() +
+          '"&gt;' +
+        '&lt;/div&gt;' +
+
+        '&lt;div class="formGroup"&gt;' +
+          '&lt;button ' +
+            'class="btn btnPrimary" ' +
+            'onclick="generateReport()"&gt;' +
+            'Generate Report' +
+          '&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div id="reportResult"&gt;&lt;/div&gt;';
+
+}
+
+
+function generateReport() {
+
+  const start =
+    document.getElementById(
+      'reportStart'
+    ).value;
+
+  const end =
+    document.getElementById(
+      'reportEnd'
+    ).value;
+
+  callServer(
+    'getReport',
+    {
+      startDate: start,
+      endDate: end
+    },
+    function(data) {
+
+      renderReportResult(data);
+
+    }
+  );
+
+}
+
+
+function renderReportResult(data) {
+
+  let rows =
+    '';
+
+  data.products.forEach(
+    function(p) {
+
+      rows +=
+        '&lt;tr&gt;' +
+        '&lt;td&gt;' +
+        p.product +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        p.quantity +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(p.sales) +
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' +
+        money(p.profit) +
+        '&lt;/td&gt;' +
+        '&lt;/tr&gt;';
+
+    }
+  );
+
+  document.getElementById(
+    'reportResult'
+  ).innerHTML =
+
+    '&lt;div class="cards"&gt;' +
+
+      statCard(
+        'Sales',
+        money(data.totalSales)
+      ) +
+
+      statCard(
+        'Purchase',
+        money(data.totalPurchase)
+      ) +
+
+      statCard(
+        'Gross Profit',
+        money(data.totalProfit)
+      ) +
+
+      statCard(
+        'Expense',
+        money(data.totalExpense)
+      ) +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Net Profit / Loss' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="statValue"&gt;' +
+      money(data.netProfit) +
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;' +
+
+    '&lt;div class="card"&gt;' +
+
+      '&lt;div class="sectionTitle"&gt;' +
+      'Product-wise Sales &amp; Profit' +
+      '&lt;/div&gt;' +
+
+      '&lt;div class="tableWrap"&gt;' +
+
+        '&lt;table&gt;' +
+
+          '&lt;thead&gt;' +
+            '&lt;tr&gt;' +
+              '&lt;th&gt;Product&lt;/th&gt;' +
+              '&lt;th&gt;Qty&lt;/th&gt;' +
+              '&lt;th&gt;Sales&lt;/th&gt;' +
+              '&lt;th&gt;Profit&lt;/th&gt;' +
+            '&lt;/tr&gt;' +
+          '&lt;/thead&gt;' +
+
+          '&lt;tbody&gt;' +
+            rows +
+          '&lt;/tbody&gt;' +
+
+        '&lt;/table&gt;' +
+
+      '&lt;/div&gt;' +
+
+    '&lt;/div&gt;';
+
+}
+
+
+/* ==========================================================
+   DATE HELPERS
+========================================================== */
+
+function today() {
+
+  const d =
+    new Date();
+
+  return (
+    d.getFullYear() +
+    '-' +
+    String(
+      d.getMonth() + 1
+    ).padStart(2, '0') +
+    '-' +
+    String(
+      d.getDate()
+    ).padStart(2, '0')
+  );
+
+}
+
+
+function firstDayOfMonth() {
+
+  const d =
+    new Date();
+
+  d.setDate(1);
+
+  return (
+    d.getFullYear() +
+    '-' +
+    String(
+      d.getMonth() + 1
+    ).padStart(2, '0') +
+    '-01'
+  );
+
+}
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+`;
+
+}
+
+
+/* ============================================================
+   SHOW WEB APP URL
+============================================================ */
+
+function showWebAppUrl() {
+
+  const url =
+    ScriptApp
+      .getService()
+      .getUrl();
+
+  SpreadsheetApp
+    .getUi()
+    .alert(
+      'Web App URL',
+      url ||
+      'Please deploy the project as a Web App first.',
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+
+}
+
+
+/***************************************************************
+ * END OF CODE
+ ***************************************************************/</textarea>
+      <div class="copy-row"><button type="button" id="copyShopManagementCode">সম্পূর্ণ Code.gs কপি করুন</button></div>
+      <p id="shopManagementCodeCopyStatus" aria-live="polite"></p>
+    </details>
+    <h3 class="section-title">🚀 Beginner-friendly তৈরি ও Deploy ধাপ</h3>
+    <article class="card step">
+      <div class="step-num">২</div><div>
+        <h3>📄 Google Sheet তৈরি করুন</h3>
+        <ol>
+          <li>আপনার Google অ্যাকাউন্টে লগইন করে <a href="https://sheets.google.com" target="_blank" rel="noopener noreferrer">Google Sheets</a> খুলুন।</li>
+          <li><strong>Blank spreadsheet</strong> নির্বাচন করে নতুন Google Sheet তৈরি করুন।</li>
+          <li>Google Sheet-এ <strong>Extensions → Apps Script</strong> ক্লিক করুন।</li>
+        </ol>
+      </div>
+    </article>
+    <article class="card step">
+      <div class="step-num">৩</div><div>
+        <h3>🧩 কোড পেস্ট ও setupSystem() চালান</h3>
+        <ol>
+          <li>এই পেজের উপরের <strong>সম্পূর্ণ Shop Management Code.gs</strong> অংশ থেকে কোড কপি করে Apps Script-এর <strong>Code.gs</strong>-এ পেস্ট করুন।</li>
+          <li>এই কোডে HTML <code>getWebAppHTML_()</code> ফাংশনের ভেতরেই আছে, তাই আলাদা <strong>Index.html</strong> ফাইল তৈরি করার দরকার নেই।</li>
+          <li>কোড Save করে function তালিকা থেকে <strong>setupSystem()</strong> নির্বাচন করুন, তারপর <strong>Run</strong> চাপুন।</li>
+          <li>প্রথমবার Google অনুমতি চাইলে আপনার Google অ্যাকাউন্ট নির্বাচন করে অনুমতিগুলো পর্যালোচনা ও Allow করুন।</li>
+        </ol>
+      </div>
+    </article>
+    <article class="card step">
+      <div class="step-num">৪</div><div>
+        <h3>🌐 Web App Deploy করে ব্যবহার করুন</h3>
+        <ol>
+          <li><strong>Deploy → New deployment</strong> নির্বাচন করে deployment type হিসেবে <strong>Web app</strong> বেছে নিন।</li>
+          <li>আপনার ব্যবহারের জন্য উপযুক্ত <strong>Execute as</strong> এবং সীমিত <strong>Who has access</strong> নির্বাচন করে <strong>Deploy</strong> চাপুন।</li>
+          <li>Deploy সম্পন্ন হলে দেখানো Web App URL কপি করুন। URL না দেখালে <strong>Deploy → Manage deployments</strong> থেকে deployment খুলুন।</li>
+          <li>Browser-এ URL খুলে Software ব্যবহার করুন। কোডে পরিবর্তন করলে নতুন version Deploy করুন।</li>
+        </ol>
+        <div class="note"><strong>মনে রাখুন:</strong> এখানে দেওয়া prompt AI-কে কোড তৈরি করতে বলবে; Software চালু করতে AI-এর সম্পূর্ণ Code.gs ও Index.html কোড Apps Script-এ বসিয়ে setup ও Deploy করতে হবে। ব্যক্তিগত দোকানের তথ্য সুরক্ষিত রাখতে Web App-এর access অপরিচিতদের জন্য উন্মুক্ত করবেন না।</div>
+      </div>
+    </article>
+  </section>
 </main>
 <footer>AI অ্যাপ ও Google Sheets ইনভেন্টরি অ্যাপ তৈরির নির্দেশিকা · মোবাইল ও কম্পিউটার উপযোগী HTML পেজ</footer>
 <script>
@@ -244,6 +5002,20 @@ function bindPromptCopy(buttonId, promptId, statusId, successMessage) {
 
 bindPromptCopy('copyPrompt', 'prdPrompt', 'copyStatus', 'প্রম্পট কপি হয়েছে!');
 bindPromptCopy('copyInventoryPrompt', 'inventoryPrompt', 'inventoryCopyStatus', 'ইনভেন্টরি প্রম্পট কপি হয়েছে!');
+bindPromptCopy('copyShopManagementPrompt', 'shopManagementPrompt', 'shopManagementCopyStatus', 'Shop Management Prompt কপি হয়েছে!');
+
+document.getElementById('copyShopManagementCode').addEventListener('click', async function () {
+  const code = document.getElementById('shopManagementCode');
+  const status = document.getElementById('shopManagementCodeCopyStatus');
+  try {
+    await navigator.clipboard.writeText(code.value);
+    status.textContent = 'সম্পূর্ণ Code.gs কপি হয়েছে!';
+  } catch (e) {
+    code.focus();
+    code.select();
+    status.textContent = 'স্বয়ংক্রিয় কপি করা যায়নি—নির্বাচিত কোডটি Ctrl+C দিয়ে কপি করুন।';
+  }
+});
 </script>
 </body>
 </html>
