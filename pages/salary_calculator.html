@@ -52,7 +52,7 @@ const MEDICAL_TOTAL   = 6000;  // বছরে মোট মেডিকেল (
 
 const items = [
   {en:"Basic Salary", bn:"বেসিক বেতন", desc:"মাসিক বেতনের 12 গুন মোট এর ঘরে", months:12, type:"basic"},
-  {en:"House Rent Allowance", bn:"বাড়ি ভাড়া ভাতা", desc:"মাসিক বেতনের 7.5 %*12 মোট এর ঘরে", months:12, pct:0.075},
+  {en:"House Rent Allowance", bn:"বাড়ি ভাড়া ভাতা", desc:"মাসিক বেতনের 7.5 %*8+4000 মোট এর ঘরে", months:12, type:"rent"},
   {en:"Medical Allowance", bn:"চিকিৎসা ভাতা", desc:"সবসময় 6000 টাকাই থাকবে মোট এর ঘরে", months:12, type:"medical"},
   {en:"Conveyance Allowance", bn:"", desc:"", months:"", type:"none"},
   {en:"Festival Bonus", bn:"উৎসব ভাতা", desc:"মাসিক বেতনের 50 %*2 এর ঘরে", months:2, pct:0.5},
@@ -83,6 +83,7 @@ function calc(){
     let total = 0;
     if(it.type==="basic") total = basic*12;
     else if(it.type==="medical") total = MEDICAL_TOTAL;
+    else if(it.type==="rent") total = basic*0.075*8 + 4000;
     else if(it.type==="none") total = 0;
     else total = basic*it.pct*it.months;
     grand += total;
