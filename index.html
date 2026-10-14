@@ -33,6 +33,28 @@ body{display:flex;flex-direction:column;font-family:"Noto Sans Bengali","Hind Si
 }
 .burger:hover{background:#ffffff40}
 
+
+/* ===== Digital Clock ===== */
+.clock{
+  display:flex;align-items:center;gap:9px;margin-left:6px;padding:4px 14px 4px 10px;
+  background:linear-gradient(135deg,#fef08a,#fde047 55%,#facc15);border:1px solid #fff7c2;border-radius:14px;
+  box-shadow:inset 0 1px 0 #ffffffb3,0 3px 12px #0000003d;color:#065f46;
+  line-height:1.1;white-space:nowrap;user-select:none;
+}
+.clock .ico{font-size:1.35rem;filter:drop-shadow(0 1px 2px #00000040)}
+.clock .txt{display:flex;flex-direction:column;gap:2px}
+.clock .time{display:flex;align-items:baseline;gap:5px;font-family:"Segoe UI",Arial,sans-serif;font-weight:900;font-size:1.15rem;letter-spacing:.5px;color:#c81414;text-shadow:0 1px 0 #ffffff99}
+.clock .time .d{display:inline-block;min-width:.62em;text-align:center}
+.clock .time .sep{animation:blink 1s steps(1) infinite;opacity:.95}
+.clock .time .per{font-size:.68rem;font-weight:700;color:#065f46;letter-spacing:0;text-shadow:none}
+.clock .date{font-size:.72rem;font-weight:900;color:#065f46;text-shadow:0 1px 0 #ffffff80}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.clock .time .sep{animation:none}}
+@media (min-width:761px) and (max-width:1180px){.clock .date{display:none}}
+@media (min-width:761px) and (max-width:980px){.clock{display:none}}
+@media (max-width:760px){.clock{margin-left:auto}.clock .date{display:none}.burger{margin-left:0}}
+@media (max-width:430px){.clock{display:none}.burger{margin-left:auto}}
+
 /* loading bar */
 .loader{position:absolute;left:0;bottom:0;height:3px;width:0;background:#fde047;transition:width .3s ease,opacity .3s}
 .loader.run{width:80%}
@@ -60,6 +82,13 @@ body{display:flex;flex-direction:column;font-family:"Noto Sans Bengali","Hind Si
 
 <header class="site-nav">
   <a class="brand" href="#/" id="brand"><span class="logo">📚</span> HTML বাংলা একাডেমি</a>
+  <div class="clock" id="clock" role="timer" aria-label="বর্তমান সময়">
+    <span class="ico" id="clkIco">🕐</span>
+    <div class="txt">
+      <div class="time" id="clkTime"></div>
+      <div class="date" id="clkDate"></div>
+    </div>
+  </div>
   <button class="burger" id="burger" aria-label="মেনু খুলুন" aria-expanded="false">☰</button>
   <ul class="menu" id="menu"></ul>
   <div class="loader" id="loader"></div>
@@ -83,9 +112,7 @@ body{display:flex;flex-direction:column;font-family:"Noto Sans Bengali","Hind Si
 const PAGES = [
   { id:"html",   title:"🏠 HTML কোর্স",      file:"pages/html-course.html" },
   { id:"access", title:"🗄️ MS Access",        file:"pages/access.html" },
-  { id:"mobile", title:"📱 সফটয়ার তৈরি", file:"pages/mobile.html" },
-  { id:"AI", title:"ℹ️ AI মাধ্যমে VS চালানো", file:"pages/AI.html" },
-  { id:"salary_calculator", title:"ℹ️ বেতনের হিসাব", file:"pages/salary_calculator.html" }
+  { id:"mobile", title:"📱 ভয়েস টাইপিং অ্যাপ", file:"pages/mobile.html" }
 ];
 const SITE_NAME = "HTML বাংলা একাডেমি";
 
@@ -142,6 +169,34 @@ view.addEventListener("load",()=>{
 window.addEventListener("hashchange",route);
 document.getElementById("brand").addEventListener("click",()=>{ location.hash = "#/" + PAGES[0].id; closeMenu(); });
 route();
+
+/* ===== ডিজিটাল ঘড়ি ===== */
+(function(){
+  const bn = n => String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+  const days = ["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"];
+  const mons = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+  const el = {t:document.getElementById("clkTime"), d:document.getElementById("clkDate"), i:document.getElementById("clkIco")};
+  const digits = str => [...str].map(c=>'<span class="d">'+c+'</span>').join("");
+  function period(h){
+    if(h>=4 && h<6)  return ["ভোর","🌅"];
+    if(h>=6 && h<12) return ["সকাল","☀️"];
+    if(h>=12&& h<15) return ["দুপুর","🌞"];
+    if(h>=15&& h<17) return ["বিকাল","🌤️"];
+    if(h>=17&& h<19) return ["সন্ধ্যা","🌇"];
+    return ["রাত","🌙"];
+  }
+  function tick(){
+    const n = new Date(), H = n.getHours();
+    const h12 = H%12 || 12, pad = x=>String(x).padStart(2,"0");
+    const [per,ico] = period(H);
+    el.t.innerHTML = digits(pad(h12))+'<span class="sep">:</span>'+digits(pad(n.getMinutes()))
+                   +'<span class="sep">:</span>'+digits(pad(n.getSeconds()))+'<span class="per">'+per+'</span>';
+    el.d.textContent = days[n.getDay()]+", "+bn(n.getDate())+" "+mons[n.getMonth()]+" "+bn(n.getFullYear());
+    el.i.textContent = ico;
+    setTimeout(tick, 1000 - n.getMilliseconds());
+  }
+  tick();
+})();
 </script>
 </body>
 </html>
