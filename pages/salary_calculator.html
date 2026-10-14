@@ -26,6 +26,43 @@
   tfoot td{font-weight:700;background:var(--head);}
   .note{margin-top:10px;color:var(--muted);font-size:14px;}
   @media print{ input{border:none;background:none;} }
+
+  /* ===== বয়স ক্যালকুলেটর ===== */
+  :root{ --accent:#0f766e; --accent-soft:#e3f3f1; --card:#fafbfc; --err:#b42318; }
+  @media (prefers-color-scheme: dark){
+    :root{ --accent:#5eead4; --accent-soft:#16312e; --card:#212428; --err:#ff8a80; }
+  }
+  .age{margin-top:44px;padding-top:28px;border-top:2px solid var(--line);max-width:860px;}
+  .age h2{font-size:20px;margin:0 0 4px;font-weight:600;}
+  .age .sub{margin:0 0 18px;color:var(--muted);font-size:14px;}
+  .age-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;}
+  .age-form label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px;}
+  .age-form input[type=date]{text-align:left;border:1px solid var(--line);background:var(--bg);padding:9px 10px;border-radius:6px;font-size:16px;}
+  .age-form input[type=date]:focus{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:0;}
+  .btn{font:inherit;font-size:15px;padding:9px 16px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer;}
+  .btn:hover{background:var(--head);}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.primary:hover{filter:brightness(1.08);}
+  @media (prefers-color-scheme: dark){ .btn.primary{color:#06201d;} }
+  .age-err{min-height:22px;margin:10px 0 0;color:var(--err);font-size:14px;}
+  .age-out{display:none;margin-top:8px;}
+  .age-out.show{display:block;}
+  .age-main{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;}
+  .age-main .lead{color:var(--muted);font-size:14px;margin-bottom:6px;}
+  .ymd{display:flex;gap:28px;flex-wrap:wrap;}
+  .ymd div{line-height:1.1;}
+  .ymd b{display:block;font-size:44px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .ymd span{font-size:15px;color:var(--fg);}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+  .stat small{display:block;color:var(--muted);font-size:13px;margin-bottom:2px;}
+  .stat strong{font-size:18px;font-variant-numeric:tabular-nums;}
+  .bday{margin-top:12px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--card);}
+  .bar{height:8px;border-radius:4px;background:var(--head);margin-top:8px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;}
+  @media (max-width:640px){ .age-form{grid-template-columns:1fr;} .ymd b{font-size:36px;} }
+  @media print{ .age-form,.age-err{display:none;} }
 </style>
 </head>
 <body>
@@ -44,6 +81,41 @@
 </table>
 </div>
 <p class="note">হলুদ ঘরে বেসিক বেতন লিখুন — বাকি সব ঘর নিজে নিজে হিসাব হবে। (মেডিকেলের ৬০০০ টাকা ও কনভেয়েন্সের মান নিচের কোডে পরিবর্তন করা যায়।)</p>
+
+<section class="age" aria-labelledby="age-title">
+  <h2 id="age-title">বয়স ক্যালকুলেটর</h2>
+  <p class="sub">জন্ম তারিখ দিন — বয়স বছর, মাস ও দিনে নির্ভুলভাবে হিসাব হবে।</p>
+  <div class="age-form">
+    <div><label for="dob">জন্ম তারিখ</label><input type="date" id="dob"></div>
+    <div><label for="asof">যে তারিখ পর্যন্ত (আজ)</label><input type="date" id="asof"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn primary" id="ageGo" type="button">হিসাব করুন</button>
+      <button class="btn" id="ageReset" type="button">রিসেট</button>
+    </div>
+  </div>
+  <p class="age-err" id="ageErr" role="alert"></p>
+  <div class="age-out" id="ageOut" aria-live="polite">
+    <div class="age-main">
+      <div class="lead" id="ageLead"></div>
+      <div class="ymd">
+        <div><b id="oY">০</b><span>বছর</span></div>
+        <div><b id="oM">০</b><span>মাস</span></div>
+        <div><b id="oD">০</b><span>দিন</span></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><small>মোট মাস</small><strong id="sMonths"></strong></div>
+      <div class="stat"><small>মোট সপ্তাহ</small><strong id="sWeeks"></strong></div>
+      <div class="stat"><small>মোট দিন</small><strong id="sDays"></strong></div>
+      <div class="stat"><small>মোট ঘণ্টা</small><strong id="sHours"></strong></div>
+      <div class="stat"><small>জন্মের বার</small><strong id="sWeekday"></strong></div>
+    </div>
+    <div class="bday">
+      <div id="bdayText"></div>
+      <div class="bar" aria-hidden="true"><i id="bdayBar"></i></div>
+    </div>
+  </div>
+</section>
 
 <script>
 /* কনফিগারেশন: পরিবর্তন করতে এখানে এডিট করুন */
@@ -93,6 +165,73 @@ function calc(){
 }
 document.getElementById("basic").addEventListener("input", calc);
 calc();
+
+/* ===== বয়স ক্যালকুলেটর ===== */
+(function(){
+  const bn = n => String(n).replace(/\d/g, d => bnDigits[d]);
+  const bnNum = n => bn(Math.round(n).toLocaleString("en-US"));
+  const weekdays = ["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"];
+  const dim = (y,m) => new Date(Date.UTC(y,m+1,0)).getUTCDate();      // m: 0-11
+  const utc = (y,m,d) => Date.UTC(y,m,d);
+  const DAY = 86400000;
+  const $ = id => document.getElementById(id);
+
+  const pad = n => String(n).padStart(2,"0");
+  const todayStr = () => { const t=new Date(); return t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate()); };
+  const parse = v => { const [y,m,d]=v.split("-").map(Number); return {y,m:m-1,d}; };
+
+  function init(){ $("asof").value = todayStr(); $("dob").max = todayStr(); }
+
+  function compute(){
+    const err=$("ageErr"), out=$("ageOut");
+    err.textContent=""; out.classList.remove("show");
+    if(!$("dob").value){ err.textContent="জন্ম তারিখ নির্বাচন করুন।"; return; }
+    if(!$("asof").value){ err.textContent="শেষ তারিখ নির্বাচন করুন।"; return; }
+    const b=parse($("dob").value), t=parse($("asof").value);
+    if(utc(b.y,b.m,b.d) > utc(t.y,t.m,t.d)){ err.textContent="জন্ম তারিখ শেষ তারিখের পরে হতে পারে না।"; return; }
+
+    // পূর্ণ মাস গণনা, তারপর অবশিষ্ট দিন (মাসের শেষ দিনের সীমা মেনে)
+    let months = (t.y-b.y)*12 + (t.m-b.m);
+    if(t.d < b.d) months--;
+    const am = b.m + months;
+    const ay = b.y + Math.floor(am/12), amo = ((am%12)+12)%12;
+    const ad = Math.min(b.d, dim(ay,amo));
+    const days = Math.round((utc(t.y,t.m,t.d) - utc(ay,amo,ad))/DAY);
+    const years = Math.floor(months/12), rm = months%12;
+
+    const totalDays = Math.round((utc(t.y,t.m,t.d)-utc(b.y,b.m,b.d))/DAY);
+
+    $("oY").textContent=bn(years); $("oM").textContent=bn(rm); $("oD").textContent=bn(days);
+    $("ageLead").textContent = "আপনার বয়স";
+    $("sMonths").textContent=bnNum(months);
+    $("sWeeks").textContent=bnNum(Math.floor(totalDays/7))+(totalDays%7?" সপ্তাহ "+bn(totalDays%7)+" দিন":" সপ্তাহ");
+    $("sDays").textContent=bnNum(totalDays);
+    $("sHours").textContent=bnNum(totalDays*24);
+    $("sWeekday").textContent=weekdays[new Date(Date.UTC(b.y,b.m,b.d)).getUTCDay()];
+
+    // পরবর্তী জন্মদিন
+    const bdayIn = y => utc(y,b.m,Math.min(b.d,dim(y,b.m)));
+    const tt = utc(t.y,t.m,t.d);
+    let ny = t.y; if(bdayIn(ny) < tt) ny++;
+    const nb = bdayIn(ny), left = Math.round((nb-tt)/DAY);
+    const prev = bdayIn(ny-1), span = Math.round((nb-prev)/DAY) || 365;
+    const nbDate = new Date(nb), wd = weekdays[nbDate.getUTCDay()];
+    if(left===0 && totalDays>0){
+      $("bdayText").textContent="🎉 আজ আপনার জন্মদিন! শুভ জন্মদিন।";
+      $("bdayBar").style.width="100%";
+    } else {
+      $("bdayText").textContent="পরবর্তী জন্মদিন আর "+bn(left)+" দিন পর ("+wd+", "+bn(nbDate.getUTCDate())+"/"+bn(nbDate.getUTCMonth()+1)+"/"+bn(nbDate.getUTCFullYear())+")।";
+      $("bdayBar").style.width=Math.max(0,Math.min(100,(span-left)/span*100))+"%";
+    }
+    out.classList.add("show");
+  }
+
+  $("ageGo").addEventListener("click",compute);
+  $("dob").addEventListener("change",compute);
+  $("asof").addEventListener("change",()=>{ if($("dob").value) compute(); });
+  $("ageReset").addEventListener("click",()=>{ $("dob").value=""; init(); $("ageErr").textContent=""; $("ageOut").classList.remove("show"); });
+  init();
+})();
 </script>
 </body>
 </html>
