@@ -152,6 +152,59 @@
             color: #1e40af;
         }
 
+
+        /* চারটি টুল একটি কার্ডের ভেতরে */
+        .tools-card {
+            margin-top: 0;
+        }
+
+        .tools-head {
+            margin: 0 0 24px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tools-card h1 {
+            font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+            line-height: 1.5;
+        }
+
+        .tools-card > header p {
+            color: #475569;
+        }
+
+        .tools {
+            gap: 22px;
+        }
+
+        .tools li {
+            padding: 0 0 0 52px;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .tools li + li {
+            padding-top: 22px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .tools li::before {
+            top: 0;
+            left: 0;
+        }
+
+        .tools li + li::before {
+            top: 22px;
+        }
+
+        @media (max-width: 480px) {
+            .tools li {
+                padding-left: 48px;
+            }
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 32px 16px;
@@ -170,12 +223,12 @@
 </head>
 <body>
     <main>
-        <header>
-            <h1>AI-এর মাধ্যমে Web Development শুরু করার প্রাথমিক Software ও Tools</h1>
-            <p>Web Development শেখা ও প্রজেক্ট তৈরি শুরু করতে নিচের Software ও অনলাইন সেবাগুলো প্রয়োজন হবে।</p>
-        </header>
-
-        <ol>
+        <section class="guide-card tools-card" aria-label="প্রাথমিক Software ও Tools">
+            <header class="tools-head">
+                <h1>AI-এর মাধ্যমে Web Development শুরু করার প্রাথমিক Software ও Tools</h1>
+                <p>Web Development শেখা ও প্রজেক্ট তৈরি শুরু করতে নিচের Software ও অনলাইন সেবাগুলো প্রয়োজন হবে।</p>
+            </header>
+        <ol class="tools">
             <li>
                 <h2>Visual Studio Code (VS Code)</h2>
                 <p>Code লেখার জন্য এটি প্রধান Code Editor। HTML, CSS, JavaScript, TypeScript এবং বিভিন্ন Web Development Project তৈরিতে VS Code ব্যবহার করা হবে।</p>
@@ -196,6 +249,7 @@
                 <p><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub-এ Account তৈরি করুন বা Sign in করুন</a></p>
             </li>
         </ol>
+        </section>
 
         <section class="guide-card" aria-labelledby="html-file-guide">
             <h2 id="html-file-guide">VS Code-এ HTML ফাইলে প্রাথমিক কোড আনা</h2>
