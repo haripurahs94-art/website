@@ -13,7 +13,8 @@
   }
   html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"Nirmala UI","Kalpurush","SolaimanLipi","Noto Sans Bengali",Calibri,Arial,sans-serif;}
   body{padding:20px;}
-  h1{font-size:20px;margin:0 0 14px;font-weight:600;}
+  h1,.age h2,.bf h2{display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin:6px auto 22px;padding:8px 44px;text-align:center;font-size:36px;line-height:1.35;font-weight:700;color:#ffe500;background:linear-gradient(#35d870,#14ad4c);border:1px solid #0d8a3a;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 7px 12px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.25);text-decoration:underline wavy #f0a000;text-underline-offset:5px;text-decoration-thickness:1px;}
+  @media (max-width:640px){h1,.age h2,.bf h2{font-size:26px;padding:6px 22px;}}
   .wrap{overflow-x:auto;}
   table{border-collapse:collapse;width:100%;min-width:760px;font-size:16px;}
   th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
@@ -32,9 +33,9 @@
   @media (prefers-color-scheme: dark){
     :root{ --accent:#5eead4; --accent-soft:#16312e; --card:#212428; --err:#ff8a80; }
   }
-  .age{margin-top:44px;padding-top:28px;border-top:2px solid var(--line);max-width:860px;}
-  .age h2{font-size:20px;margin:0 0 4px;font-weight:600;}
-  .age .sub{margin:0 0 18px;color:var(--muted);font-size:14px;}
+  .age{margin:44px auto 0;padding-top:28px;border-top:2px solid var(--line);max-width:860px;}
+  .age h2{margin:0 auto 14px;}
+  .age .sub{margin:0 0 18px;color:var(--muted);font-size:14px;text-align:center;}
   .age-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;}
   .age-form label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px;}
   .age-form input[type=date]{text-align:left;border:1px solid var(--line);background:var(--bg);padding:9px 10px;border-radius:6px;font-size:16px;}
@@ -63,10 +64,54 @@
   .bar i{display:block;height:100%;background:var(--accent);width:0;}
   @media (max-width:640px){ .age-form{grid-template-columns:1fr;} .ymd b{font-size:36px;} }
   @media print{ .age-form,.age-err{display:none;} }
+
+  /* ===== অবসর ও কল্যাণ ভাতা ===== */
+  .bf{margin:44px auto 0;padding-top:28px;border-top:2px solid var(--line);max-width:860px;}
+  .bf h2{margin:0 auto 14px;}
+  .bf h3{font-size:16px;margin:22px 0 8px;font-weight:600;}
+  .bf .sub{margin:0 0 18px;color:var(--muted);font-size:14px;text-align:center;}
+  .bf-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end;}
+  .bf-form label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px;}
+  .bf-form input{text-align:left;border:1px solid var(--line);background:var(--bg);padding:9px 10px;border-radius:6px;font-size:16px;}
+  .bf-form input:focus{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:0;}
+  .bf-form .full{grid-column:1/-1;}
+  .bf-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .bf-err{min-height:22px;margin:10px 0 0;color:var(--err);font-size:14px;}
+  .bf-out{display:none;}
+  .bf-out.show{display:block;}
+  .bf-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:12px;}
+  .bf-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .bf-card{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;}
+  .bf-card .lead{color:var(--muted);font-size:14px;}
+  .bf-card b{display:block;font-size:32px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.25;margin:2px 0;}
+  .bf-card span{font-size:13px;color:var(--muted);}
+  .bf-total{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);background:var(--head);border-radius:8px;padding:12px 16px;font-weight:700;}
+  .bf-total strong{font-size:22px;font-variant-numeric:tabular-nums;}
+  .bf-warn{margin-top:12px;border:1px solid var(--err);color:var(--err);border-radius:8px;padding:10px 14px;font-size:14px;}
+  .bf-rules{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .bf-rules div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:15px;}
+  .bf-rules b{display:block;margin-bottom:2px;}
+  .bf-tbls{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .bf-tbls table{min-width:0;font-size:15px;}
+  .bf-tbls tr.on td{background:var(--accent-soft);font-weight:700;color:var(--accent);}
+  @media (max-width:640px){ .bf-form,.bf-cards,.bf-rules,.bf-tbls{grid-template-columns:1fr;} .bf-card b{font-size:26px;} }
+  @media print{ .bf-form,.bf-actions,.bf-err{display:none;} }
+
+  /* ===== তিনটি টুলকে আলাদা কার্ডে ভাগ ===== */
+  :root{ --page:#e6ecef; --shadow:0 12px 30px rgba(20,40,60,.18), 0 2px 6px rgba(20,40,60,.10); }
+  @media (prefers-color-scheme: dark){ :root{ --page:#111315; --shadow:0 12px 30px rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.4); } }
+  html,body{background:var(--page);}
+  body{padding:26px 16px 46px;}
+  section.card{max-width:900px;margin:0 auto 34px;padding:26px 28px 24px;background:var(--bg);border:1px solid var(--line);border-top:6px solid #14ad4c;border-radius:14px;box-shadow:var(--shadow);}
+  section.card:last-of-type{margin-bottom:0;}
+  section.card .wrap{border-radius:6px;}
+  @media (max-width:640px){ body{padding:14px 10px 30px;} section.card{padding:18px 14px 18px;margin-bottom:24px;border-radius:12px;} }
+  @media print{ html,body{background:#fff;} section.card{box-shadow:none;border-radius:0;} body.print-bf section.card:not(.bf){display:none;} body.print-bf .bf{border:none;margin:0;padding:0;max-width:none;} }
 </style>
 </head>
 <body>
-<h1>বেতন কাঠামো</h1>
+<section class="card sal" aria-labelledby="sal-title">
+<h1 id="sal-title">বেতনের হিসাব</h1>
 <div class="wrap">
 <table>
   <thead>
@@ -81,8 +126,9 @@
 </table>
 </div>
 <p class="note">হলুদ ঘরে বেসিক বেতন লিখুন — বাকি সব ঘর নিজে নিজে হিসাব হবে। (মেডিকেলের ৬০০০ টাকা ও কনভেয়েন্সের মান নিচের কোডে পরিবর্তন করা যায়।)</p>
+</section>
 
-<section class="age" aria-labelledby="age-title">
+<section class="card age" aria-labelledby="age-title">
   <h2 id="age-title">বয়স ক্যালকুলেটর</h2>
   <p class="sub">জন্ম তারিখ দিন — বয়স বছর, মাস ও দিনে নির্ভুলভাবে হিসাব হবে।</p>
   <div class="age-form">
@@ -115,6 +161,42 @@
       <div class="bar" aria-hidden="true"><i id="bdayBar"></i></div>
     </div>
   </div>
+</section>
+
+<section class="card bf" aria-labelledby="bf-title">
+  <h2 id="bf-title">অবসর ও কল্যাণ ভাতার হিসাব</h2>
+  <p class="sub">এমপিওভুক্ত শিক্ষক-কর্মচারীদের চাকরির মেয়াদ অনুযায়ী কত টাকা মিলবে।</p>
+  <div class="bf-form">
+    <div><label for="bfJoin">চাকরিতে যোগদানের তারিখ</label><input type="date" id="bfJoin"></div>
+    <div><label for="bfExit">অবসরের তারিখ</label><input type="date" id="bfExit"></div>
+    <div><label for="bfBasic">সর্বশেষ মূল বেতন (টাকা)</label><input type="number" id="bfBasic" min="0" inputmode="decimal" placeholder="যেমন: 26680"></div>
+    <div><label for="bfYears">অথবা সরাসরি চাকরির বছর (তারিখ না থাকলে)</label><input type="number" id="bfYears" min="0" step="1" inputmode="numeric" placeholder="যেমন: 20"></div>
+  </div>
+  <div class="bf-actions">
+    <button class="btn" id="bfUse" type="button">উপরের বেসিক বেতন নিন</button>
+    <button class="btn" id="bfReset" type="button">রিসেট</button>
+    <button class="btn primary" id="bfPrint" type="button">প্রিন্ট করুন</button>
+  </div>
+  <p class="bf-err" id="bfErr" role="alert"></p>
+
+  <div class="bf-out" id="bfOut" aria-live="polite">
+    <div class="bf-info" id="bfInfo"></div>
+    <div class="bf-cards">
+      <div class="bf-card"><div class="lead">কল্যাণ ভাতা</div><b id="bfK"></b><span id="bfKs"></span></div>
+      <div class="bf-card"><div class="lead">অবসর ভাতা</div><b id="bfA"></b><span id="bfAs"></span></div>
+    </div>
+    <div class="bf-warn" id="bfWarn" hidden></div>
+    <div class="bf-total"><span>সর্বমোট (কল্যাণ + অবসর)</span><strong id="bfT"></strong></div>
+  </div>
+
+  <h3>হিসাবের নিয়ম</h3>
+  <div class="bf-rules">
+    <div><b>কল্যাণ ভাতা</b>সর্বশেষ মূল বেতন × চাকরির মোট বছর</div>
+    <div><b>অবসর ভাতা</b>সর্বশেষ মূল বেতন × প্রযোজ্য মাসসংখ্যা (২৫ বছর বা বেশি হলে সর্বোচ্চ ৭৫ মাস)</div>
+  </div>
+  <h3>চাকরির মেয়াদ অনুযায়ী অবসর সুবিধার মাসসংখ্যা</h3>
+  <div class="bf-tbls" id="bfTbls"></div>
+  <p class="note">চাকরির পূর্ণ বছর গণনায় ধরা হয়েছে। অবসর ভাতার জন্য ন্যূনতম ১০ বছর চাকরি প্রয়োজন। চূড়ান্ত অঙ্ক সংশ্লিষ্ট কর্তৃপক্ষের অনুমোদনের ওপর নির্ভর করবে।</p>
 </section>
 
 <script>
@@ -231,6 +313,84 @@ calc();
   $("asof").addEventListener("change",()=>{ if($("dob").value) compute(); });
   $("ageReset").addEventListener("click",()=>{ $("dob").value=""; init(); $("ageErr").textContent=""; $("ageOut").classList.remove("show"); });
   init();
+})();
+
+/* ===== অবসর ও কল্যাণ ভাতা ===== */
+(function(){
+  const $ = id => document.getElementById(id);
+  const bn = n => String(n).replace(/\d/g, d => bnDigits[d]);
+  const tk = n => "৳ " + bn(Math.round(n).toLocaleString("en-IN"));
+  const M = [10,13,16,19,22,25,29,33,37,42,47,52,57,63,69]; // ১০ থেকে ২৪ বছর
+  const months = y => y<10 ? 0 : (y>=25 ? 75 : M[y-10]);
+
+  function diff(a,b){
+    let y=b.getFullYear()-a.getFullYear(), m=b.getMonth()-a.getMonth(), d=b.getDate()-a.getDate()+1;
+    if(d<0){m--;d+=30}else if(d>=30){m++;d-=30}
+    if(m<0){y--;m+=12}
+    if(m>=12){y++;m-=12}
+    return {y,m,d};
+  }
+
+  function table(active){
+    const head='<tr><th>চাকরির কার্যকর মেয়াদ</th><th>অবসর সুবিধা</th></tr>';
+    const rows=[];
+    for(let y=10;y<=25;y++){
+      const lab = y<25 ? bn(y)+" বছর বা তদূর্ধ্বে "+bn(y+1)+" বছর" : bn(25)+" বছর বা তদূর্ধ্বে";
+      rows.push('<tr class="'+(y===active?'on':'')+'"><td>'+lab+'</td><td>'+bn(months(y))+' মাসের মূল বেতন</td></tr>');
+    }
+    $("bfTbls").innerHTML='<table>'+head+rows.slice(0,8).join('')+'</table><table>'+head+rows.slice(8).join('')+'</table>';
+  }
+
+  function calc(){
+    const out=$("bfOut"), err=$("bfErr"), basic=parseFloat($("bfBasic").value)||0;
+    err.textContent=""; out.classList.remove("show");
+    let years=null, txt="", note="";
+    if($("bfJoin").value && $("bfExit").value){
+      const jd=new Date($("bfJoin").value), ed=new Date($("bfExit").value);
+      if(ed<jd){ err.textContent="অবসরের তারিখ যোগদানের তারিখের আগে হতে পারে না।"; table(-1); return; }
+      const s=diff(jd,ed); years=s.y;
+      txt=bn(s.y)+" বছর "+bn(s.m)+" মাস "+bn(s.d)+" দিন"; note="গণনায় ধরা: "+bn(years)+" বছর";
+    } else if($("bfYears").value!==""){
+      years=Math.max(0,Math.floor(+$("bfYears").value)); txt=bn(years)+" বছর";
+    }
+    if(years===null || !basic){ table(-1); return; }
+
+    const k=basic*years, mo=months(years), a=basic*mo;
+    $("bfInfo").innerHTML =
+      '<div class="stat"><small>চাকরিকাল</small><strong>'+txt+'</strong></div>'+
+      (note?'<div class="stat"><small>হিসাবে ধরা বছর</small><strong>'+bn(years)+' বছর</strong></div>':'')+
+      '<div class="stat"><small>সর্বশেষ মূল বেতন</small><strong>'+tk(basic)+'</strong></div>';
+    $("bfK").textContent=tk(k);
+    $("bfKs").textContent=tk(basic)+" × "+bn(years)+" বছর";
+    const w=$("bfWarn");
+    if(years<10){
+      $("bfA").textContent="প্রযোজ্য নয়"; $("bfAs").textContent="ন্যূনতম ১০ বছর চাকরি প্রয়োজন";
+      w.hidden=false; w.textContent="চাকরিকাল "+bn(years)+" বছর হওয়ায় অবসর ভাতা প্রযোজ্য নয়।";
+    } else {
+      $("bfA").textContent=tk(a); $("bfAs").textContent=tk(basic)+" × "+bn(mo)+" মাস"; w.hidden=true;
+    }
+    $("bfT").textContent=tk(k+(years>=10?a:0));
+    table(years>=10?Math.min(years,25):-1);
+    out.classList.add("show");
+  }
+
+  ["bfJoin","bfExit","bfBasic","bfYears"].forEach(id=>$(id).addEventListener("input",calc));
+  $("bfUse").addEventListener("click",()=>{
+    const v=document.getElementById("basic").value;
+    if(!v){ $("bfErr").textContent="উপরের বেতন কাঠামোতে আগে বেসিক বেতন লিখুন।"; return; }
+    $("bfBasic").value=v; calc();
+  });
+  $("bfReset").addEventListener("click",()=>{
+    ["bfJoin","bfExit","bfBasic","bfYears"].forEach(id=>$(id).value="");
+    calc();
+  });
+  $("bfPrint").addEventListener("click",()=>{
+    if(!$("bfOut").classList.contains("show")){ $("bfErr").textContent="প্রিন্ট করার আগে মূল বেতন এবং তারিখ বা চাকরির বছর দিয়ে হিসাব করুন।"; return; }
+    document.body.classList.add("print-bf");
+    window.print();
+  });
+  window.addEventListener("afterprint",()=>document.body.classList.remove("print-bf"));
+  table(-1);
 })();
 </script>
 </body>
