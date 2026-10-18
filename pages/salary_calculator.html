@@ -13,8 +13,8 @@
   }
   html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"Nirmala UI","Kalpurush","SolaimanLipi","Noto Sans Bengali",Calibri,Arial,sans-serif;}
   body{padding:20px;}
-  h1,.age h2,.bf h2{display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin:6px auto 22px;padding:8px 44px;text-align:center;font-size:36px;line-height:1.35;font-weight:700;color:#ffe500;background:linear-gradient(#35d870,#14ad4c);border:1px solid #0d8a3a;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 7px 12px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.25);text-decoration:underline wavy #f0a000;text-underline-offset:5px;text-decoration-thickness:1px;}
-  @media (max-width:640px){h1,.age h2,.bf h2{font-size:26px;padding:6px 22px;}}
+  h1,.age h2,.bf h2,.pb h2{display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin:6px auto 22px;padding:8px 44px;text-align:center;font-size:36px;line-height:1.35;font-weight:700;color:#ffe500;background:linear-gradient(#35d870,#14ad4c);border:1px solid #0d8a3a;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 7px 12px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.25);text-decoration:underline wavy #f0a000;text-underline-offset:5px;text-decoration-thickness:1px;}
+  @media (max-width:640px){h1,.age h2,.bf h2,.pb h2{font-size:26px;padding:6px 22px;}}
   .wrap{overflow-x:auto;}
   table{border-collapse:collapse;width:100%;min-width:760px;font-size:16px;}
   th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
@@ -96,6 +96,32 @@
   .bf-tbls tr.on td{background:var(--accent-soft);font-weight:700;color:var(--accent);}
   @media (max-width:640px){ .bf-form,.bf-cards,.bf-rules,.bf-tbls{grid-template-columns:1fr;} .bf-card b{font-size:26px;} }
   @media print{ .bf-form,.bf-actions,.bf-err{display:none;} }
+
+
+  /* ===== পল্লী বিদ্যুৎ বিল ===== */
+  .pb{margin:44px auto 0;max-width:900px;}
+  .pb h2{margin:0 auto 14px;}
+  .pb .sub{margin:0 0 18px;color:var(--muted);font-size:14px;text-align:center;}
+  .pb label{display:block;font-weight:600;margin-bottom:6px;font-size:14px;color:var(--muted);}
+  .pb input[type=number]{text-align:left;border:1px solid var(--line);background:var(--bg);padding:9px 10px;border-radius:6px;font-size:16px;}
+  .pb input[type=number]:focus{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:0;}
+  .pb input#pbUnits{font-size:20px;padding:12px;}
+  .pb table{min-width:0;font-size:15px;}
+  .pb th,.pb td{text-align:right;}
+  .pb th{text-align:center;}
+  .pb td:first-child,.pb th:first-child{text-align:left;}
+  .pb td.slab{background:var(--accent-soft);text-align:center;}
+  .pb td.slab small{display:block;color:var(--muted);}
+  .pb .box{margin-top:16px;}
+  .pb .total td{font-weight:700;background:var(--head);}
+  .pb .grand td{font-weight:700;font-size:18px;background:var(--accent-soft);color:var(--accent);}
+  .pb .big{text-align:center;background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:14px;margin-top:16px;}
+  .pb .big .n{font-size:34px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .pb .big .t{color:var(--muted);font-size:14px;}
+  .pb details summary{cursor:pointer;font-weight:600;}
+  .pb .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px;}
+  .pb .pgrid label{font-size:13px;font-weight:500;}
+  .pb .wrap{border-radius:6px;}
 
   /* ===== তিনটি টুলকে আলাদা কার্ডে ভাগ ===== */
   :root{ --page:#e6ecef; --shadow:0 12px 30px rgba(20,40,60,.18), 0 2px 6px rgba(20,40,60,.10); }
@@ -197,6 +223,36 @@
   <h3>চাকরির মেয়াদ অনুযায়ী অবসর সুবিধার মাসসংখ্যা</h3>
   <div class="bf-tbls" id="bfTbls"></div>
   <p class="note">চাকরির পূর্ণ বছর গণনায় ধরা হয়েছে। অবসর ভাতার জন্য ন্যূনতম ১০ বছর চাকরি প্রয়োজন। চূড়ান্ত অঙ্ক সংশ্লিষ্ট কর্তৃপক্ষের অনুমোদনের ওপর নির্ভর করবে।</p>
+</section>
+
+<section class="card pb" aria-labelledby="pb-title">
+  <h2 id="pb-title">⚡ পল্লী বিদ্যুৎ বিল</h2>
+  <p class="sub">ব্যবহৃত ইউনিট দিন — স্ল্যাব অনুযায়ী বিল নিজে নিজে হিসাব হবে।</p>
+  <label for="pbUnits">ব্যবহৃত ইউনিট (kWh) লিখুন</label>
+  <input type="number" id="pbUnits" min="0" step="1" value="185" inputmode="decimal">
+  <details style="margin-top:14px">
+    <summary>⚙️ রেট ও চার্জ পরিবর্তন করুন</summary>
+    <div class="pgrid" id="pbSettings"></div>
+    <p class="note">প্রথম (৫.২৬) ও দ্বিতীয় (৮.৫০) স্ল্যাবের রেট আপনার বিল থেকে নেওয়া। অন্য স্ল্যাবের রেট অনুমানভিত্তিক, তাই আপনার বিলের রেট দেখে মিলিয়ে নিন।</p>
+  </details>
+
+  <div class="big"><div class="t">প্রদেয় সর্বমোট বিল (টাকা)</div><div class="n" id="pbBigTotal">০</div></div>
+
+  <div class="wrap box">
+    <table>
+      <thead><tr><th>ধাপ</th><th>মূল্যহার (Tk/kWh)</th><th>বিদ্যুৎ ব্যবহার (kWh)</th><th>এনার্জি চার্জ (Tk)</th></tr></thead>
+      <tbody id="pbSlabBody"></tbody>
+    </table>
+  </div>
+
+  <div class="wrap box"><table id="pbSummary"></table></div>
+
+  <div class="box">
+    <label for="pbArrear">বকেয়া / বিলম্ব মাশুল (ঐচ্ছিক, টাকা)</label>
+    <input type="number" id="pbArrear" min="0" step="1" value="0">
+    <table style="margin-top:12px" id="pbPayable"></table>
+    <p class="note">বকেয়া বা বিলম্ব-পরিশোধ মাশুল থাকলে এখানে যোগ করুন, তাহলে শোধযোগ্য সর্বমোট টাকা দেখাবে।</p>
+  </div>
 </section>
 
 <script>
@@ -391,6 +447,85 @@ calc();
   });
   window.addEventListener("afterprint",()=>document.body.classList.remove("print-bf"));
   table(-1);
+})();
+
+/* ===== পল্লী বিদ্যুৎ বিল ===== */
+(function(){
+  const $ = id => document.getElementById(id);
+  const bn = s => String(s).replace(/\d/g, d => bnDigits[d]);
+  const f = (n, dec=0) => bn(Number(n).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}));
+
+  const slabs = [
+    {name:'লাইফ লাইন', range:'০–৫০',   rate:4.63, key:'pb_r0'},
+    {name:'প্রথম',     range:'০–৭৫',   from:0,   to:75,  rate:5.26, key:'pb_r1'},
+    {name:'দ্বিতীয়',   range:'৭৬–২০০', from:75,  to:200, rate:8.50, key:'pb_r2'},
+    {name:'তৃতীয়',    range:'২০১–৩০০',from:200, to:300, rate:7.59, key:'pb_r3'},
+    {name:'চতুর্থ',    range:'৩০১–৪০০',from:300, to:400, rate:8.02, key:'pb_r4'},
+    {name:'পঞ্চম',     range:'৪০১–৬০০',from:400, to:600, rate:12.67,key:'pb_r5'},
+    {name:'ষষ্ঠ',      range:'৬০০ এর উর্ধ্বে',from:600,to:Infinity,rate:14.61,key:'pb_r6'},
+  ];
+  const charges = [
+    {label:'ডিমান্ড চার্জ (টাকা)', key:'pb_demand', val:84},
+    {label:'পি.এফ. সারচার্জ (টাকা)', key:'pb_pfc', val:0},
+    {label:'মিটার ভাড়া (টাকা)', key:'pb_meter', val:10},
+    {label:'বিবিধ বিল/ফি (টাকা)', key:'pb_misc', val:0},
+    {label:'ভ্যাট (%)', key:'pb_vat', val:5},
+  ];
+
+  const st = $('pbSettings');
+  slabs.forEach(s => st.insertAdjacentHTML('beforeend',
+    `<div><label for="${s.key}">${s.name} রেট (টাকা/ইউনিট)</label><input type="number" step="0.01" id="${s.key}" value="${s.rate}"></div>`));
+  charges.forEach(c => st.insertAdjacentHTML('beforeend',
+    `<div><label for="${c.key}">${c.label}</label><input type="number" step="0.01" id="${c.key}" value="${c.val}"></div>`));
+  st.querySelectorAll('input').forEach(i => i.addEventListener('input', pbCalc));
+  $('pbUnits').addEventListener('input', pbCalc);
+  $('pbArrear').addEventListener('input', pbCalc);
+
+  const num = id => parseFloat($(id).value) || 0;
+
+  function pbCalc(){
+    const units = Math.max(0, num('pbUnits'));
+    const rows = slabs.map(s => ({...s, rate:num(s.key), used:0, amt:0}));
+
+    if (units <= 50) rows[0].used = units;
+    else for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      r.used = Math.max(0, Math.min(units, r.to) - r.from);
+    }
+    rows.forEach(r => r.amt = r.used * r.rate);
+
+    const energy = Math.round(rows.reduce((a,r)=>a+r.amt,0));
+    const demand = num('pb_demand'), pfc = num('pb_pfc'), meter = num('pb_meter'), misc = num('pb_misc');
+    const billNoVat = energy + demand + pfc + meter + misc;
+    const vat = Math.round(billNoVat * num('pb_vat') / 100);
+    const total = billNoVat + vat;
+
+    $('pbSlabBody').innerHTML = rows.map(r => `
+      <tr><td class="slab">${r.name}<small>[ ${r.range} ]</small></td>
+      <td>${r.used>0?f(r.rate,2):''}</td>
+      <td>${r.used>0?f(r.used, Number.isInteger(r.used)?0:2):''}</td>
+      <td>${r.used>0?f(r.amt,2):''}</td></tr>`).join('') +
+      `<tr class="total"><td colspan="2">মোট বিদ্যুৎ ব্যবহার / এনার্জি চার্জ (১)</td><td>${f(units, Number.isInteger(units)?0:2)}</td><td>${f(energy)}</td></tr>`;
+
+    $('pbSummary').innerHTML = `
+      <tr><td>এনার্জি চার্জ (১)</td><td>${f(energy)}</td></tr>
+      <tr><td>ডিমান্ড চার্জ (২)</td><td>${f(demand)}</td></tr>
+      <tr><td>পি.এফ. সারচার্জ (৩)</td><td>${f(pfc)}</td></tr>
+      <tr><td>মিটার ভাড়া (৪)</td><td>${f(meter)}</td></tr>
+      <tr><td>বিবিধ বিল/ফি (৫)</td><td>${f(misc)}</td></tr>
+      <tr class="total"><td>বিলের পরিমাণ (৬=১+২+৩+৪+৫)</td><td>${f(billNoVat)}</td></tr>
+      <tr><td>ভ্যাট (${bn(num('pb_vat'))}%)</td><td>${f(vat)}</td></tr>
+      <tr class="grand"><td>প্রদেয় সর্বমোট বিল (টাকা)</td><td>${f(total)}</td></tr>`;
+
+    const arrear = num('pbArrear');
+    $('pbPayable').innerHTML = `
+      <tr><td>চলতি মাসের বিল</td><td>${f(total)}</td></tr>
+      <tr><td>বকেয়া / বিলম্ব মাশুল</td><td>${f(arrear)}</td></tr>
+      <tr class="grand"><td>শোধযোগ্য সর্বমোট টাকা</td><td>${f(total+arrear)}</td></tr>`;
+
+    $('pbBigTotal').textContent = '৳ ' + f(total);
+  }
+  pbCalc();
 })();
 </script>
 </body>
