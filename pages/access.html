@@ -62,6 +62,102 @@
 <div class="noresult" id="qNone">কোনো ফলাফল পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজে দেখুন।</div>
 <div class="cards">
 <article class="card">
+<U> MS Excel সেল লক করা :</U><br>
+=B2*H2 এখানে H2 সেলকে লক করার জন্য =B2*$H$2 <br>
+H2 কে সিলেক্ট করে কী বোর্ড থেকে F4/FN_key+F4 চাপলে হয়ে যাবে।
+</article>
+
+<article class="card">
+<U> MS Excel এক সেলের তথ্য অন্য জায়গায় নেওয়া :</U><br>
+যে সেলে তথ্য নেওয়া প্রয়োজন ঐ সেলে কার্সর রেখে =চিহ্ন দিয়ে তারপর ' চিহ্ন দিয়ে তারপর শিপটের নাম (Data Entry-1) দিয়ে তারপর ' দিয়ে তারপর ! দিয়ে তারপর সে সেল থেকে তথ্য আসবে ঐ সেলের নাম <br>
+যেমন ='Data Entry-1'!F6
+</article>
+
+<article class="card">
+<U> MS Excel, Roll NO অনুযায়ী ১নং শীট থেকে ২নং শীটে ছাত্র/ছাত্রীর নাম আনা  :</U><br>
+
+
+
+
+২নং শীটের যে স্থানে নাম আনার দরকার ঐ স্থানে কার্সর রেখে ফরমুলাবারে নিচের সূত্রটি ব্যবহার করব।<br>
+=VLOOKUP(I12,Sheet1!A15:AE234,2,0)<br>
+<br>
+I12=২নং শীটের আইডি নং এর সেল এর নাম<br>
+Sheet1!A15:AE234=১ নং শীটে গিয়ে   পুরোটা ডাটা সিলেক্ট করতে হবে<br>
+2= ১ নং শীটের ২নং কলাম যেখানে নাম আছে তা<br>
+Or,<br>
+=IFERROR(VLOOKUP(I12,Sheet1!A15:AF234,2,0),"")
+</article>
+
+<article class="card">
+<U> MS Excel ১নং শীট থেকে ২নং শীটে ছাত্র/ছাত্রীর Roll NO আনা  :</U><br>
+
+২নং শীটের যে স্থানে Roll NO আনার দরকার ঐ স্থানে কার্সর রেখে ফরমুলাবারে নিচের সূত্রটি ব্যবহার করব।<br>
+
+Data-Data Validation- Allow -List-source<br>
+ এর ঘরে কিক্ল করে ১ নং শীটে গিয়ে  Roll NO এর ঘর যে সমস্ত সেলে আছে তার পুরোটা  সিলেক্ট করতে হবে- ok
+</article>
+
+<article class="card">
+<U> MS Excel কোন cell ERROR আসলে তা দুর করার নিয়ম
+  :</U><br>
+
+=IFERROR(,"")
+
+<br>
+যেমন বিয়োগ করার সময় যদি  ERROR আসে তাহলে = I5-J5 এই সুত্রের পরে হবে<br>
+=IFERROR(I5-J5,"")
+</article>
+
+<article class="card">
+<U> MS Excel কোন সেলে অটোমেটিক তখ্ আনার জন্য :</U><br>
+=IFERROR(VLOOKUP(C2,তালিকা!$A$2:$D$7,2,FALSE),"")<br>
+এখান<br>
+C2 হলো সে সেলে কিক্ল করলে পরের সেল অটেোমেটিক আসবে ঐ সেলের নাম<br>
+তালিকা!$A$2:$D$7 হলো অন্য একটি শীটের  লক করা রেঞ্জ (A2:D7)<br>
+2 হলো সে সেলের তথ্য অটেোমেটিক আসবে   ঐ সেলের কলাম নং
+</article>
+
+<article class="card">
+<U> MS Excel Save & Print Buttons :</U><br> 
+
+Sub saveinvoiceandprint()<br>
+Dim saverng As Range<br>
+Dim pdfname As String<br>
+Dim path As String<br>
+Set saverng = Range("A1 যে ঘর থেকে শুরু:N24যে ঘর পর্যন্ত ") <br>
+pdfname = Range("P24 এই ঘরে ফাইলের নাম লিখতে হবে") <br>
+path = "C:\Users\wohab sir\Desktop\ss\ ডেক্সটপে ss নামে একটি ফোল্ডার দেখানো হয়েছে" <br>
+saverng.ExportAsFixedFormat xlTypePDF, Filename:=path & pdfname & ".pdf", openafterpublish:=True <br>
+
+End Sub
+</article>
+
+<article class="card">
+MS Excel Print/প্রিন্ট : <br>
+	লাইন নিচে/ নিচে নেওয়াঃ Home-  Wrap Text/ অথবা , কীবোর্ড থেকে Alt চাপ দিয়ে এন্টার চাপতে হবে।<br>
+	Freezeঃ  View- Freez Panens <br>
+	Sort: প্রয়োজনীয় কলাম সিলেক্ট Data- Sort- Expand the Selection- Sort- প্রয়োজনীয় কমান্ড দিয়ে OK<br>
+	Filter / খুজে বের করাঃ হেডিং এর মধ্যে কার্সর রেখে Data- Filter এখন হেডিং এর মধ্যে ড্রপ-ডাউন দেখা যাবে প্রয়োজনীয় তা সিলেক্ট করে খুজব।<br>
+	Print /প্রিন্ট : Ctrl+ P = Page Setup = <br>
+	Page থেকে  Protaint /Landscape 	সাইজ থেকে A4 দিব এবং  Scaleing থেকে প্রয়োজনীয় 90%<br>
+	Margine থেকে Center On Page এর Horizontally -Ok<br>
+	হেডিং এক লাইন প্রতি পৃষ্ঠায় আনাঃ Page Layout- Print Titels- Sheet- Rows to Repate at top এর এরোতে কিক্ল।  তারপর প্রয়োজনীয় অংশটুকু মাউসের মাধ্যমে সিলেক্ট এরোতে ক্লিক ওকে কিক্ল।
+</article>
+
+<article class="card">
+<U>MS Excel এক কলামের (মনির হোসেন/2025) ডাটাকে দুই কলামে নেওয়ার নিয়ম :</U><br>
+প্রথমে কলামের ডানপাশে একটি ফাঁকা কলাম করে নেব<br>
+তারপর Data<br>
+	Text to Columns<br>
+	Delimited<br>
+	Next<br>
+	Other এর ঘরে প্রয়োজনীয় চিহ্ন (যেমন / ) দিয়ে<br>
+	Next<br>
+	Finish
+</article>
+
+<article class="card">
 লিংক দেওয়া জন্য কোডঃ < a href="url"> লেখা দিন  < /a >
 </article>
 
@@ -949,67 +1045,10 @@ loanPayment.* ফিল্ড নিয়ে আরো একটি কুয়ে�
 </article>
 
 <article class="card">
-<U> MS Excel সেল লক করা :</U><br>
-=B2*H2 এখানে H2 সেলকে লক করার জন্য =B2*$H$2 <br>
-H2 কে সিলেক্ট করে কী বোর্ড থেকে F4/FN_key+F4 চাপলে হয়ে যাবে।
-</article>
-
-<article class="card">
-<U> MS Excel এক সেলের তথ্য অন্য জায়গায় নেওয়া :</U><br>
-যে সেলে তথ্য নেওয়া প্রয়োজন ঐ সেলে কার্সর রেখে =চিহ্ন দিয়ে তারপর ' চিহ্ন দিয়ে তারপর শিপটের নাম (Data Entry-1) দিয়ে তারপর ' দিয়ে তারপর ! দিয়ে তারপর সে সেল থেকে তথ্য আসবে ঐ সেলের নাম <br>
-যেমন ='Data Entry-1'!F6
-</article>
-
-<article class="card">
-<U> MS Excel, Roll NO অনুযায়ী ১নং শীট থেকে ২নং শীটে ছাত্র/ছাত্রীর নাম আনা  :</U><br>
-
-
-
-
-২নং শীটের যে স্থানে নাম আনার দরকার ঐ স্থানে কার্সর রেখে ফরমুলাবারে নিচের সূত্রটি ব্যবহার করব।<br>
-=VLOOKUP(I12,Sheet1!A15:AE234,2,0)<br>
-<br>
-I12=২নং শীটের আইডি নং এর সেল এর নাম<br>
-Sheet1!A15:AE234=১ নং শীটে গিয়ে   পুরোটা ডাটা সিলেক্ট করতে হবে<br>
-2= ১ নং শীটের ২নং কলাম যেখানে নাম আছে তা<br>
-Or,<br>
-=IFERROR(VLOOKUP(I12,Sheet1!A15:AF234,2,0),"")
-</article>
-
-<article class="card">
-<U> MS Excel ১নং শীট থেকে ২নং শীটে ছাত্র/ছাত্রীর Roll NO আনা  :</U><br>
-
-২নং শীটের যে স্থানে Roll NO আনার দরকার ঐ স্থানে কার্সর রেখে ফরমুলাবারে নিচের সূত্রটি ব্যবহার করব।<br>
-
-Data-Data Validation- Allow -List-source<br>
- এর ঘরে কিক্ল করে ১ নং শীটে গিয়ে  Roll NO এর ঘর যে সমস্ত সেলে আছে তার পুরোটা  সিলেক্ট করতে হবে- ok
-</article>
-
-<article class="card">
 <U> কুয়েরিতে নিচে নিচে কাইটেরিয়াতে একের অধিক কাইটেরিয়া যোগ করা :</U><br>
 কাইটেরিয়া ঘরে একটি লিখে অর এর ঘরে আরো একটি লিখে নিচে নিচে প্রয়োজনীয়  লিখলে চলবে।<br>
 Or, কাইটেরিয়া ঘরে একটি লিখে Or দিয়ে লিখলেও হবে।<br>
 যেমন "DM" Or "GM" Or "GET"
-</article>
-
-<article class="card">
-<U> MS Excel কোন cell ERROR আসলে তা দুর করার নিয়ম
-  :</U><br>
-
-=IFERROR(,"")
-
-<br>
-যেমন বিয়োগ করার সময় যদি  ERROR আসে তাহলে = I5-J5 এই সুত্রের পরে হবে<br>
-=IFERROR(I5-J5,"")
-</article>
-
-<article class="card">
-<U> MS Excel কোন সেলে অটোমেটিক তখ্ আনার জন্য :</U><br>
-=IFERROR(VLOOKUP(C2,তালিকা!$A$2:$D$7,2,FALSE),"")<br>
-এখান<br>
-C2 হলো সে সেলে কিক্ল করলে পরের সেল অটেোমেটিক আসবে ঐ সেলের নাম<br>
-তালিকা!$A$2:$D$7 হলো অন্য একটি শীটের  লক করা রেঞ্জ (A2:D7)<br>
-2 হলো সে সেলের তথ্য অটেোমেটিক আসবে   ঐ সেলের কলাম নং
 </article>
 
 <article class="card">
@@ -1355,21 +1394,6 @@ Or, ইংরেজি বিষয়ের   A+ প্রাপ্ত শিক�
  ডিজাইন ভিউতে  গ্রেড সিলেক্ট করে উপর থেকে Formate -Conditional Formatting-<br>
  New Rule- Equql to- "F" ফন্ট কালার লাল দিয়ে বোল্ড সেভ করব  <br>
 New Rule- Equql to- "A+" ফন্ট কালার সবুজ রং দিয়ে বোল্ড সেভ করব
-</article>
-
-<article class="card">
-<U> MS Excel Save & Print Buttons :</U><br> 
-
-Sub saveinvoiceandprint()<br>
-Dim saverng As Range<br>
-Dim pdfname As String<br>
-Dim path As String<br>
-Set saverng = Range("A1 যে ঘর থেকে শুরু:N24যে ঘর পর্যন্ত ") <br>
-pdfname = Range("P24 এই ঘরে ফাইলের নাম লিখতে হবে") <br>
-path = "C:\Users\wohab sir\Desktop\ss\ ডেক্সটপে ss নামে একটি ফোল্ডার দেখানো হয়েছে" <br>
-saverng.ExportAsFixedFormat xlTypePDF, Filename:=path & pdfname & ".pdf", openafterpublish:=True <br>
-
-End Sub
 </article>
 
 <article class="card">
@@ -1963,18 +1987,6 @@ Fee_Type= fees টেবিলের  ফিল্ড এর নাম <br>
 Class = fees টেবিলের  ফিল্ড এর নাম <br>
 FeeConnectionF = যে ফরমে তথ্য আনতে চাই ঐ ফরমে নাম <br>
 01/31= কম্পিউটারের তারিখ অনুযায় বসবে অথবা (31/01)
-</article>
-
-<article class="card">
-MS Excel Print/প্রিন্ট : <br>
-	লাইন নিচে/ নিচে নেওয়াঃ Home-  Wrap Text/ অথবা , কীবোর্ড থেকে Alt চাপ দিয়ে এন্টার চাপতে হবে।<br>
-	Freezeঃ  View- Freez Panens <br>
-	Sort: প্রয়োজনীয় কলাম সিলেক্ট Data- Sort- Expand the Selection- Sort- প্রয়োজনীয় কমান্ড দিয়ে OK<br>
-	Filter / খুজে বের করাঃ হেডিং এর মধ্যে কার্সর রেখে Data- Filter এখন হেডিং এর মধ্যে ড্রপ-ডাউন দেখা যাবে প্রয়োজনীয় তা সিলেক্ট করে খুজব।<br>
-	Print /প্রিন্ট : Ctrl+ P = Page Setup = <br>
-	Page থেকে  Protaint /Landscape 	সাইজ থেকে A4 দিব এবং  Scaleing থেকে প্রয়োজনীয় 90%<br>
-	Margine থেকে Center On Page এর Horizontally -Ok<br>
-	হেডিং এক লাইন প্রতি পৃষ্ঠায় আনাঃ Page Layout- Print Titels- Sheet- Rows to Repate at top এর এরোতে কিক্ল।  তারপর প্রয়োজনীয় অংশটুকু মাউসের মাধ্যমে সিলেক্ট এরোতে ক্লিক ওকে কিক্ল।
 </article>
 
 <article class="card">
