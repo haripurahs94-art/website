@@ -1,309 +1,195 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="AI-এর মাধ্যমে Web Development শুরু করতে প্রয়োজনীয় প্রাথমিক Software ও Tools-এর পরিচিতি।">
-    <title>Web Development-এর প্রাথমিক Software ও Tools</title>
-    <style>
-        :root {
-            color-scheme: light;
-            font-family: "Noto Sans Bengali", "Bangla Sangam MN", sans-serif;
-            color: #1e293b;
-            background: #f1f5f9;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="AI-এর মাধ্যমে Web Development শুরু করতে প্রয়োজনীয় প্রাথমিক Software ও Tools-এর পরিচিতি।">
+<title>Web Development-এর প্রাথমিক Software ও Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e4e9ee;--card:#fff;--ink:#1d2a3a;--line:#d5dde5;--red:#16a34a;--muted:#5b6776;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111827;--card:#1f2937;--ink:#f1f5f9;--line:#374151;--red:#34d399;--muted:#aab4c3}}
+:root[data-theme="dark"]{--bg:#111827;--card:#1f2937;--ink:#f1f5f9;--line:#374151;--red:#34d399;--muted:#aab4c3}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri",system-ui,sans-serif;}
+.wrap{width:calc(100% - 24px);max-width:1020px;margin:20px auto;padding:32px 24px 28px;background:var(--card);border-top:6px solid #16a34a;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+header{text-align:center;margin-bottom:28px}
+h1{margin:0;font-size:clamp(28px,5.5vw,52px);font-weight:700;line-height:1.25}
+.btn{display:inline-block;background:linear-gradient(#3ddc6b,#16a34a);color:#ffe600;border:1px solid #118a3e;border-radius:3px;padding:6px 28px;box-shadow:0 6px 10px rgba(0,0,0,.3);text-decoration:underline wavy #d8c800;text-decoration-thickness:1px;text-underline-offset:6px}
+h1{margin-bottom:18px}
+.sub{font-size:clamp(20px,3.6vw,34px);font-weight:600;margin:4px 0 0;padding-bottom:8px;display:inline-block;border-bottom:3px solid var(--red)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;position:relative}
+.grid::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--line);opacity:.6}
+.item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.n{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-weight:700;font-size:20px;background:var(--c)}
+.ic{flex:none;width:76px;height:76px;border-radius:18px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:30px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tx{min-width:0}
+.tx b{display:block;font-size:22px;line-height:1.2}
+.tx span{display:block;color:var(--muted);font-size:17px;margin:2px 0 6px}
+.tx a{display:inline-block;max-width:100%;overflow-wrap:anywhere;color:var(--ink);text-decoration:none;font-size:14px;padding:3px 10px;border-radius:8px;background:var(--c);color:#1d2340}
+.tx a:hover,.tx a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.note{display:inline-block;background:#fff59a;color:#333;padding:8px 16px;margin-top:14px;font-weight:600;transform:rotate(2deg);box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.q{display:grid;grid-template-columns:64px 1fr auto 1fr;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.qb{background:#fbd0d6;color:#d6204f;font-weight:700;font-size:19px;border-radius:999px;padding:6px 0;text-align:center}
+.qt{font-size:19px;font-weight:600}
+.keys{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.k{min-width:42px;height:42px;padding:0 10px;display:grid;place-items:center;border:2px solid #7a8aa6;border-radius:8px;background:linear-gradient(#fff,#dfe5ee);color:#1d2a3a;font-weight:700;box-shadow:0 2px 0 #9aa7bd}
+.d{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:16px}.d i{font-style:normal;font-size:32px}
+.sec{margin:22px 0 0}.sec h2{margin:0 0 8px;font-size:22px;color:var(--red);border-bottom:2px solid var(--line);padding-bottom:4px}.sec p,.sec li{font-size:17px;line-height:1.7}.sec ul{margin:6px 0;padding-left:22px}
+.code{background:#1e2533;color:#e6edf7;border-radius:10px;padding:14px 16px;overflow-x:auto;font:14px/1.6 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre}
+.tw{overflow-x:auto}.tw table{border-collapse:collapse;width:100%;min-width:520px}.tw th,.tw td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;font-size:16px}.tw th{background:#16a34a;color:#fff}.tw code,.sec li code,.sec p code{background:rgba(22,163,74,.14);padding:1px 6px;border-radius:5px;font-size:.92em}
+.foot{text-align:center;font-weight:700;font-size:20px;margin:18px 0 0;color:var(--red)}
+@media (max-width:760px){.q{grid-template-columns:56px 1fr}.keys,.d{grid-column:2}}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.grid::before{display:none}.ic{width:60px;height:60px;font-size:24px}.tx b{font-size:20px}}
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 48px 20px;
-        }
-
-        main {
-            width: min(100%, 820px);
-            margin: 0 auto;
-        }
-
-        header {
-            margin-bottom: 32px;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 0 0 12px;
-            color: #0f172a;
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-        }
-
-        header p {
-            margin: 0;
-            color: #475569;
-            font-size: 1.05rem;
-            line-height: 1.8;
-        }
-
-        ol {
-            display: grid;
-            gap: 16px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            counter-reset: tools;
-        }
-
-        .guide-card {
-            margin-top: 28px;
-            padding: 24px;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            background: #fff;
-            box-shadow: 0 8px 24px rgb(15 23 42 / 5%);
-        }
-
-        .guide-card h2 {
-            margin-bottom: 8px;
-        }
-
-        .guide-card > p {
-            margin: 0;
-            color: #475569;
-            line-height: 1.8;
-        }
-
-        .guide-steps {
-            gap: 14px;
-            margin-top: 18px;
-            counter-reset: steps;
-        }
-
-        .guide-steps li {
-            min-height: 36px;
-            padding: 5px 0 5px 48px;
-            border: 0;
-            background: transparent;
-            box-shadow: none;
-            counter-increment: steps;
-        }
-
-        .guide-steps li::before {
-            top: 0;
-            left: 0;
-            content: counter(steps);
-        }
-
-        .guide-steps p {
-            margin: 0;
-            color: #475569;
-            line-height: 1.8;
-        }
-
-        li {
-            position: relative;
-            padding: 24px 24px 24px 76px;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            background: #fff;
-            box-shadow: 0 8px 24px rgb(15 23 42 / 5%);
-            counter-increment: tools;
-        }
-
-        li::before {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            display: grid;
-            width: 36px;
-            height: 36px;
-            place-items: center;
-            border-radius: 50%;
-            background: #dbeafe;
-            color: #1d4ed8;
-            content: counter(tools);
-            font-weight: 700;
-        }
-
-        h2 {
-            margin: 0 0 8px;
-            color: #0f172a;
-            font-size: 1.25rem;
-        }
-
-        li p {
-            margin: 0;
-            color: #475569;
-            line-height: 1.8;
-        }
-
-        li p + p {
-            margin-top: 8px;
-        }
-
-        a {
-            color: #1d4ed8;
-            font-weight: 600;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 3px;
-        }
-
-        a:hover {
-            color: #1e40af;
-        }
-
-
-        /* চারটি টুল একটি কার্ডের ভেতরে */
-        .tools-card {
-            margin-top: 0;
-        }
-
-        .tools-head {
-            margin: 0 0 24px;
-            padding-bottom: 22px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .tools-card h1 {
-            font-size: clamp(1.5rem, 4.5vw, 2.1rem);
-            line-height: 1.5;
-        }
-
-        .tools-card > header p {
-            color: #475569;
-        }
-
-        .tools {
-            gap: 22px;
-        }
-
-        .tools li {
-            padding: 0 0 0 52px;
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-            box-shadow: none;
-        }
-
-        .tools li + li {
-            padding-top: 22px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .tools li::before {
-            top: 0;
-            left: 0;
-        }
-
-        .tools li + li::before {
-            top: 22px;
-        }
-
-        @media (max-width: 480px) {
-            .tools li {
-                padding-left: 48px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 32px 16px;
-            }
-
-            li {
-                padding: 20px 18px 20px 64px;
-            }
-
-            li::before {
-                top: 20px;
-                left: 18px;
-            }
-        }
-    </style>
+.lead{text-align:center;color:var(--muted);font-size:18px;line-height:1.7;margin:0 0 14px}
+h1.long{font-size:clamp(22px,4vw,34px);line-height:1.5}
+h1.long .btn{padding:8px 24px}
+.list .item{align-items:flex-start}
+.list .item:last-child{border-bottom:0}
+.list .tx p{margin:0 0 6px;font-size:17px;line-height:1.7}
+.list .tx p:last-child{margin-bottom:0}
+.list .tx b{margin-bottom:4px}
+.list .tx code{background:rgba(22,163,74,.14);padding:1px 6px;border-radius:5px;font-size:.92em}
+.tx a.lnk{margin-top:2px}
+</style>
 </head>
 <body>
-    <main>
-        <section class="guide-card tools-card" aria-label="প্রাথমিক Software ও Tools">
-            <header class="tools-head">
-                <h1>AI-এর মাধ্যমে Web Development শুরু করার প্রাথমিক Software ও Tools</h1>
-                <p>Web Development শেখা ও প্রজেক্ট তৈরি শুরু করতে নিচের Software ও অনলাইন সেবাগুলো প্রয়োজন হবে।</p>
-            </header>
-        <ol class="tools">
-            <li>
-                <h2>Visual Studio Code (VS Code)</h2>
-                <p>Code লেখার জন্য এটি প্রধান Code Editor। HTML, CSS, JavaScript, TypeScript এবং বিভিন্ন Web Development Project তৈরিতে VS Code ব্যবহার করা হবে।</p>
-            </li>
-            <li>
-                <h2>Node.js (LTS Version)</h2>
-                <p>JavaScript ও TypeScript এবং বিভিন্ন Web Development Tool চালানোর জন্য Node.js একটি প্রয়োজনীয় Runtime Environment।</p>
-                <p>Node.js-এর সঙ্গে <strong>npm</strong> পাওয়া যায়। npm ব্যবহার করে বিভিন্ন Package ও Development Tool ইনস্টল এবং পরিচালনা করা যায়।</p>
-            </li>
-            <li>
-                <h2>Git Bash</h2>
-                <p>Git Version Control এবং বিভিন্ন Development Command চালানোর জন্য Git Bash একটি Terminal Environment। এর মাধ্যমে Git, Node.js/npm এবং Web Development-এর অন্যান্য Command ব্যবহার করা যাবে।</p>
-                <p><a href="https://git-scm.com/install/windows" target="_blank" rel="noopener noreferrer">Windows-এর জন্য Git ডাউনলোড ও ইনস্টল করুন</a></p>
-            </li>
-            <li>
-                <h2>GitHub Account</h2>
-                <p>Code সংরক্ষণ, Project Management এবং Team-এর সঙ্গে কাজ করার জন্য GitHub ব্যবহার করা হয়। Git Bash-এর মাধ্যমে Local Computer-এর Project GitHub-এ Push, Pull ও Manage করা যাবে।</p>
-                <p><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub-এ Account তৈরি করুন বা Sign in করুন</a></p>
-            </li>
-        </ol>
-        </section>
-
-        <section class="guide-card" aria-labelledby="html-file-guide">
-            <h2 id="html-file-guide">VS Code-এ HTML ফাইলে প্রাথমিক কোড আনা</h2>
-            <p>নতুন HTML ফাইল তৈরি করে Emmet-এর <code>!</code> abbreviation ব্যবহার করে প্রয়োজনীয় HTML কাঠামো স্বয়ংক্রিয়ভাবে যোগ করুন।</p>
-            <ol class="guide-steps">
-                <li><p>Visual Studio Code (VS Code) খুলুন।</p></li>
-                <li><p>মেনু থেকে <strong>File &gt; New File</strong> নির্বাচন করুন।</p></li>
-                <li><p>ফাইলের নাম লিখুন, যেমন <code>wohab.html</code>, তারপর কিবোর্ডে <strong>Enter</strong> চাপুন।</p></li>
-                <li><p>ফাইলটি কোথায় রাখবেন সেই ফোল্ডার নির্বাচন করে <strong>Create File</strong> বা <strong>Save</strong> নির্বাচন করুন।</p></li>
-                <li><p>নতুন HTML ফাইলে ক্লিক করে কিবোর্ড থেকে <strong>Shift + 1</strong> চাপুন; এতে <code>!</code> টাইপ হবে।</p></li>
-                <li><p>Emmet-এর পরামর্শ থেকে <code>!</code> নির্বাচন করে <strong>Enter</strong> চাপুন। এতে HTML-এর প্রাথমিক কাঠামো স্বয়ংক্রিয়ভাবে ফাইলে যুক্ত হবে।</p></li>
-            </ol>
-        </section>
-
-        <section class="guide-card" aria-labelledby="ai-html-edit-guide">
-            <h2 id="ai-html-edit-guide">AI-এর মাধ্যমে HTML ফাইল এডিট করার নিয়ম</h2>
-            <p>VS Code-এ GitHub Copilot Chat ব্যবহার করে HTML ফাইলের তথ্য বা কোড পরিবর্তন করতে নিচের ধাপগুলো অনুসরণ করুন।</p>
-            <ol class="guide-steps">
-                <li><p>Visual Studio Code (VS Code) খুলুন।</p></li>
-                <li><p>মেনু থেকে <strong>File &gt; Open Folder...</strong> নির্বাচন করুন।</p></li>
-                <li><p>যে ফোল্ডারের ফাইল AI-এর মাধ্যমে এডিট করতে চান, সেটি নির্বাচন করে খুলুন। ফোল্ডারের ফাইলগুলো Explorer-এ দেখা যাবে।</p></li>
-                <li><p>যে HTML ফাইলের তথ্য বা কোড পরিবর্তন করতে চান, সেটি খুলুন।</p></li>
-                <li><p>প্রয়োজনে VS Code-এ GitHub Account দিয়ে Sign in করুন।</p></li>
-                <li><p>ডান পাশের <strong>Chat</strong> প্যানেল খুলে <strong>Chat with Copilot</strong> বক্সে কী পরিবর্তন চান তা স্পষ্টভাবে লিখে পাঠান।</p></li>
-                <li><p>Copilot-এর প্রস্তাবিত পরিবর্তনগুলো দেখে যাচাই করুন এবং প্রয়োজন অনুযায়ী গ্রহণ বা সংশোধন করুন।</p></li>
-            </ol>
-        </section>
-
-        <section class="guide-card" aria-labelledby="ai-folder-shortcut-guide">
-            <h2 id="ai-folder-shortcut-guide">AI-এর মাধ্যমে Folder-এর HTML ফাইল এডিট করার শর্টকাট নিয়ম</h2>
-            <p>VS Code-এর ভেতর থেকে Folder না খুলে সরাসরি Folder-এর মেনু থেকে VS Code-এ খোলার সহজ পদ্ধতি নিচে দেওয়া হলো।</p>
-            <ol class="guide-steps">
-                <li><p>যে Folder-এর HTML ফাইল AI-এর মাধ্যমে এডিট করতে চান, সেই Folder-এর উপর মাউসের কার্সর রাখুন।</p></li>
-                <li><p>মাউসের <strong>ডান বাটনে</strong> ক্লিক করুন।</p></li>
-                <li><p>মেনু থেকে <strong>Open with Code</strong> নির্বাচন করুন। এই অপশনের আগে VS Code Editor-এর চিহ্ন (আইকন) থাকবে।</p></li>
-                <li><p>Folder-টি VS Code-এ খুলে যাবে। Explorer থেকে যে HTML ফাইল পরিবর্তন করতে চান সেটি খুলুন।</p></li>
-                <li><p>এরপর ডান পাশের <strong>Chat</strong> প্যানেলে Copilot-কে কী পরিবর্তন চান তা লিখে পাঠান।</p></li>
-            </ol>
-        </section>
-
-        <section class="guide-card" aria-labelledby="github-publish-guide">
-            <h2 id="github-publish-guide">GitHub-এ ফাইল পাবলিশ করার নিয়ম</h2>
-            <p>GitHub-এ নতুন Repository তৈরি করে Local Computer-এর ফাইল আপলোড ও পাবলিশ করতে নিচের ধাপগুলো অনুসরণ করুন।</p>
-            <ol class="guide-steps">
-                <li><p>GitHub-এ Login করার পর উপরে প্লাস (<strong>+</strong>) চিহ্নের স্থানে ক্লিক করুন (<strong>Create new</strong>)।</p></li>
-                <li><p><strong>New repository</strong> ক্লিক করুন।</p></li>
-                <li><p><strong>Repository name</strong> লিখুন।</p></li>
-                <li><p><strong>Create repository</strong> ক্লিক করুন।</p></li>
-                <li><p><strong>Home</strong> থেকে <strong>Repositories</strong>-এ গিয়ে প্রয়োজনীয় Repository নির্বাচন করুন।</p></li>
-                <li><p><strong>Quick setup — if you’ve done this kind of thing before</strong> অংশে <strong>uploading an existing file</strong> লিংকে ক্লিক করুন। এরপর ফাইল কোথায় আছে তা দেখিয়ে নির্বাচন করুন।</p></li>
-                <li><p>ফাইল আপলোড হওয়ার পর <strong>Commit changes</strong> ক্লিক করুন।</p></li>
-                <li><p>পরবর্তীতে ফাইল আপডেট বা নতুন ফাইল যোগ করার জন্য Repository-তে <strong>Add file</strong> ব্যবহার করুন।</p></li>
-            </ol>
-        </section>
-    </main>
+<div class="wrap">
+<header><h1 class="long"><span class="btn">AI-এর মাধ্যমে Web Development শুরু করার প্রাথমিক Software ও Tools</span></h1></header>
+<p class="lead">Web Development শেখা ও প্রজেক্ট তৈরি শুরু করতে নিচের Software ও অনলাইন সেবাগুলো প্রয়োজন হবে।</p>
+<div class="list">
+<div class="item"><div class="n" style="--c:#f9a8c9">১</div><div class="tx"><b>Visual Studio Code (VS Code)</b><p>Code লেখার জন্য এটি প্রধান Code Editor। HTML, CSS, JavaScript, TypeScript এবং বিভিন্ন Web Development Project তৈরিতে VS Code ব্যবহার করা হবে।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">২</div><div class="tx"><b>Node.js (LTS Version)</b><p>JavaScript ও TypeScript এবং বিভিন্ন Web Development Tool চালানোর জন্য Node.js একটি প্রয়োজনীয় Runtime Environment।</p><p>Node.js-এর সঙ্গে <strong>npm</strong> পাওয়া যায়। npm ব্যবহার করে বিভিন্ন Package ও Development Tool ইনস্টল এবং পরিচালনা করা যায়।</p></div></div>
+<div class="item"><div class="n" style="--c:#c9a8ee">৩</div><div class="tx"><b>Git Bash</b><p>Git Version Control এবং বিভিন্ন Development Command চালানোর জন্য Git Bash একটি Terminal Environment। এর মাধ্যমে Git, Node.js/npm এবং Web Development-এর অন্যান্য Command ব্যবহার করা যাবে।</p><p><a class="lnk" style="--c:#cdeedd" href="https://git-scm.com/install/windows" target="_blank" rel="noopener noreferrer">Windows-এর জন্য Git ডাউনলোড ও ইনস্টল করুন</a></p></div></div>
+<div class="item"><div class="n" style="--c:#9fdcc0">৪</div><div class="tx"><b>GitHub Account</b><p>Code সংরক্ষণ, Project Management এবং Team-এর সঙ্গে কাজ করার জন্য GitHub ব্যবহার করা হয়। Git Bash-এর মাধ্যমে Local Computer-এর Project GitHub-এ Push, Pull ও Manage করা যাবে।</p><p><a class="lnk" style="--c:#cdeedd" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub-এ Account তৈরি করুন বা Sign in করুন</a></p></div></div>
+</div>
+</div>
+<div class="wrap">
+<header><h1 class="long"><span class="btn">VS Code-এ HTML ফাইলে প্রাথমিক কোড আনা</span></h1></header>
+<p class="lead">নতুন HTML ফাইল তৈরি করে Emmet-এর <code>!</code> abbreviation ব্যবহার করে প্রয়োজনীয় HTML কাঠামো স্বয়ংক্রিয়ভাবে যোগ করুন।</p>
+<div class="list">
+<div class="item"><div class="n" style="--c:#f9a8c9">১</div><div class="tx"><p>Visual Studio Code (VS Code) খুলুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">২</div><div class="tx"><p>মেনু থেকে <strong>File &gt; New File</strong> নির্বাচন করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#c9a8ee">৩</div><div class="tx"><p>ফাইলের নাম লিখুন, যেমন <code>wohab.html</code>, তারপর কিবোর্ডে <strong>Enter</strong> চাপুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#9fdcc0">৪</div><div class="tx"><p>ফাইলটি কোথায় রাখবেন সেই ফোল্ডার নির্বাচন করে <strong>Create File</strong> বা <strong>Save</strong> নির্বাচন করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#a9d3f2">৫</div><div class="tx"><p>নতুন HTML ফাইলে ক্লিক করে কিবোর্ড থেকে <strong>Shift + 1</strong> চাপুন; এতে <code>!</code> টাইপ হবে।</p></div></div>
+<div class="item"><div class="n" style="--c:#f9c28f">৬</div><div class="tx"><p>Emmet-এর পরামর্শ থেকে <code>!</code> নির্বাচন করে <strong>Enter</strong> চাপুন। এতে HTML-এর প্রাথমিক কাঠামো স্বয়ংক্রিয়ভাবে ফাইলে যুক্ত হবে।</p></div></div>
+</div>
+</div>
+<div class="wrap">
+<header><h1 class="long"><span class="btn">AI-এর মাধ্যমে HTML ফাইল এডিট করার নিয়ম</span></h1></header>
+<p class="lead">VS Code-এ GitHub Copilot Chat ব্যবহার করে HTML ফাইলের তথ্য বা কোড পরিবর্তন করতে নিচের ধাপগুলো অনুসরণ করুন।</p>
+<div class="list">
+<div class="item"><div class="n" style="--c:#f9a8c9">১</div><div class="tx"><p>Visual Studio Code (VS Code) খুলুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">২</div><div class="tx"><p>মেনু থেকে <strong>File &gt; Open Folder...</strong> নির্বাচন করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#c9a8ee">৩</div><div class="tx"><p>যে ফোল্ডারের ফাইল AI-এর মাধ্যমে এডিট করতে চান, সেটি নির্বাচন করে খুলুন। ফোল্ডারের ফাইলগুলো Explorer-এ দেখা যাবে।</p></div></div>
+<div class="item"><div class="n" style="--c:#9fdcc0">৪</div><div class="tx"><p>যে HTML ফাইলের তথ্য বা কোড পরিবর্তন করতে চান, সেটি খুলুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#a9d3f2">৫</div><div class="tx"><p>প্রয়োজনে VS Code-এ GitHub Account দিয়ে Sign in করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#f9c28f">৬</div><div class="tx"><p>ডান পাশের <strong>Chat</strong> প্যানেল খুলে <strong>Chat with Copilot</strong> বক্সে কী পরিবর্তন চান তা স্পষ্টভাবে লিখে পাঠান।</p></div></div>
+<div class="item"><div class="n" style="--c:#f9a8c9">৭</div><div class="tx"><p>Copilot-এর প্রস্তাবিত পরিবর্তনগুলো দেখে যাচাই করুন এবং প্রয়োজন অনুযায়ী গ্রহণ বা সংশোধন করুন।</p></div></div>
+</div>
+</div>
+<div class="wrap">
+<header><h1 class="long"><span class="btn">AI-এর মাধ্যমে Folder-এর HTML ফাইল এডিট করার শর্টকাট নিয়ম</span></h1></header>
+<p class="lead">VS Code-এর ভেতর থেকে Folder না খুলে সরাসরি Folder-এর মেনু থেকে VS Code-এ খোলার সহজ পদ্ধতি নিচে দেওয়া হলো।</p>
+<div class="list">
+<div class="item"><div class="n" style="--c:#f9a8c9">১</div><div class="tx"><p>যে Folder-এর HTML ফাইল AI-এর মাধ্যমে এডিট করতে চান, সেই Folder-এর উপর মাউসের কার্সর রাখুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">২</div><div class="tx"><p>মাউসের <strong>ডান বাটনে</strong> ক্লিক করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#c9a8ee">৩</div><div class="tx"><p>মেনু থেকে <strong>Open with Code</strong> নির্বাচন করুন। এই অপশনের আগে VS Code Editor-এর চিহ্ন (আইকন) থাকবে।</p></div></div>
+<div class="item"><div class="n" style="--c:#9fdcc0">৪</div><div class="tx"><p>Folder-টি VS Code-এ খুলে যাবে। Explorer থেকে যে HTML ফাইল পরিবর্তন করতে চান সেটি খুলুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#a9d3f2">৫</div><div class="tx"><p>এরপর ডান পাশের <strong>Chat</strong> প্যানেলে Copilot-কে কী পরিবর্তন চান তা লিখে পাঠান।</p></div></div>
+</div>
+</div>
+<div class="wrap">
+<header><h1 class="long"><span class="btn">GitHub-এ ফাইল পাবলিশ করার নিয়ম</span></h1></header>
+<p class="lead">GitHub-এ নতুন Repository তৈরি করে Local Computer-এর ফাইল আপলোড ও পাবলিশ করতে নিচের ধাপগুলো অনুসরণ করুন।</p>
+<div class="list">
+<div class="item"><div class="n" style="--c:#f9a8c9">১</div><div class="tx"><p>GitHub-এ Login করার পর উপরে প্লাস (<strong>+</strong>) চিহ্নের স্থানে ক্লিক করুন (<strong>Create new</strong>)।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">২</div><div class="tx"><p><strong>New repository</strong> ক্লিক করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#c9a8ee">৩</div><div class="tx"><p><strong>Repository name</strong> লিখুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#9fdcc0">৪</div><div class="tx"><p><strong>Create repository</strong> ক্লিক করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#a9d3f2">৫</div><div class="tx"><p><strong>Home</strong> থেকে <strong>Repositories</strong>-এ গিয়ে প্রয়োজনীয় Repository নির্বাচন করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#f9c28f">৬</div><div class="tx"><p><strong>Quick setup — if you’ve done this kind of thing before</strong> অংশে <strong>uploading an existing file</strong> লিংকে ক্লিক করুন। এরপর ফাইল কোথায় আছে তা দেখিয়ে নির্বাচন করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#f9a8c9">৭</div><div class="tx"><p>ফাইল আপলোড হওয়ার পর <strong>Commit changes</strong> ক্লিক করুন।</p></div></div>
+<div class="item"><div class="n" style="--c:#fbe27a">৮</div><div class="tx"><p>পরবর্তীতে ফাইল আপডেট বা নতুন ফাইল যোগ করার জন্য Repository-তে <strong>Add file</strong> ব্যবহার করুন।</p></div></div>
+</div>
+</div>
+<div class="wrap">
+<header>
+<h1><span class="btn">১৬টি ফ্রি AI Tools</span></h1>
+<p class="sub">যা আপনার কাজকে সহজ করে দেবে!</p>
+</header>
+<main class="grid" id="grid"></main>
+</div>
+<div class="wrap">
+<header><h1><span class="btn">Windows-এর ১০টি গোপন শর্টকাট</span></h1><div class="note">কাজ করুন দ্রুত এবং সহজে 😊</div></header>
+<main id="win"></main>
+<p class="foot">আজ শিখুন → কাজ করুন আরও দ্রুত</p>
+</div>
+<div class="wrap">
+<header><h1><span class="btn">HTML-এর &lt;img&gt; ট্যাগ</span></h1><div class="note">ওয়েবপেজে ছবি দেখানোর সহজ উপায় 🖼️</div></header>
+<section class="sec"><h2>মূল কথা</h2><p><code>&lt;img&gt;</code> দিয়ে ওয়েবপেজে ছবি দেখানো হয়। এটি খালি ট্যাগ, ক্লোজিং ট্যাগ লাগে না।</p><div class="code">&lt;img src="photo.jpg" alt="ছবির বর্ণনা" width="600" height="400"&gt;</div></section>
+<section class="sec"><h2>৪টি জরুরি অ্যাট্রিবিউট</h2><ul><li><code>src</code> : ছবির ঠিকানা (আবশ্যক)</li><li><code>alt</code> : ছবির বর্ণনা, ছবি লোড না হলে এটি দেখায় (আবশ্যক)</li><li><code>width</code>, <code>height</code> : মাপ দিলে পেজ লাফায় না</li><li><code>loading="lazy"</code> : দরকার হলেই ছবি লোড হয়, পেজ দ্রুত খোলে</li></ul><p>ছবি রেসপনসিভ করতে CSS-এ দিন: <code>max-width:100%; height:auto;</code></p></section>
+</div>
+<div class="wrap">
+<header><h1><span class="btn">HTML-এর &lt;a&gt; (অ্যাঙ্কর) ট্যাগ</span></h1><div class="note">লিংক তৈরির ট্যাগ 🔗</div></header>
+<section class="sec"><h2>মূল কথা</h2><p><code>&lt;a&gt;</code> (অ্যাঙ্কর) ট্যাগ দিয়ে লিংক তৈরি হয়। লিংকে ক্লিক করলে অন্য পেজ, ফাইল বা পেজের অন্য অংশে যাওয়া যায়।</p><div class="code">&lt;a href="https://example.com" target="_blank" rel="noopener"&gt;এখানে ক্লিক করুন&lt;/a&gt;</div></section>
+<section class="sec"><h2>জরুরি অ্যাট্রিবিউট</h2><ul><li><code>href</code> : লিংকের গন্তব্য (আবশ্যক)</li><li><code>target="_blank"</code> : নতুন ট্যাবে খোলে</li><li><code>rel="noopener"</code> : নতুন ট্যাবে খুললে নিরাপত্তার জন্য দিন</li><li><code>download</code> : ক্লিকে ফাইল ডাউনলোড হয়</li></ul></section>
+<section class="sec"><h2>href-এ কী কী দেওয়া যায়</h2><ul><li>ওয়েব ঠিকানা: <code>https://example.com</code></li><li>পেজের অংশ: <code>#contact</code></li><li>ইমেইল: <code>mailto:name@mail.com</code></li><li>ফোন: <code>tel:+8801700000000</code></li></ul><p>ছবিকেও লিংক করা যায়: <code>&lt;a href="#"&gt;&lt;img src="logo.png" alt="হোম"&gt;&lt;/a&gt;</code></p></section>
+</div>
+<script>
+var T=[
+["ChatGPT","লেখালেখি ও কনটেন্ট তৈরি","https://chatgpt.com/","#10a37f","G","#f9c6dc","#f7a8c8"],
+["Google Gemini","AI Assistant","https://gemini.google.com/","#4b7bec","✦","#fdf3a6","#f6e27a"],
+["Claude AI","Writing ও Coding","https://claude.ai/","#d9774f","✳","#e3d2f5","#cdb4ee"],
+["Canva","গ্রাফিক ডিজাইন","https://www.canva.com/","#1fb6c9","C","#cdeedd","#9fdcc0"],
+["Leonardo AI","AI ছবি তৈরি","https://leonardo.ai/","#3b2a6b","L","#f9c6dc","#f7a8c8"],
+["Ideogram AI","AI পোস্টার ডিজাইন","https://ideogram.ai/","#111","I","#cfe8fa","#a9d3f2"],
+["Microsoft Designer","AI ডিজাইন","https://designer.microsoft.com/","#4a3fd1","D","#e3d2f5","#cdb4ee"],
+["Adobe Express","পোস্টার ও কনটেন্ট ডিজাইন","https://www.adobe.com/express/","#111","A","#cdeedd","#9fdcc0"],
+["CapCut","ভিডিও এডিটিং","https://www.capcut.com/","#111","✂","#f9c6dc","#f7a8c8"],
+["Pika AI","AI ভিডিও তৈরি","https://pika.art/","#111","P","#cdeedd","#9fdcc0"],
+["Google Flow","সিনেমাটিক AI ভিডিও","https://labs.google/fx/tools/flow","#3563e9","〰","#e3d2f5","#cdb4ee"],
+["ElevenLabs","AI ভয়েসওভার","https://elevenlabs.io/","#222","❘❘❘","#cfe8fa","#a9d3f2"],
+["Suno AI","AI গান ও মিউজিক","https://suno.com/","#111","♪","#fde0c2","#f9c28f"],
+["Perplexity AI","AI সার্চ ও রিসার্চ","https://www.perplexity.ai/","#0f4c4c","✱","#cdeedd","#9fdcc0"],
+["Lovable AI","AI দিয়ে ওয়েবসাইট তৈরি","https://lovable.dev/","#1a1a1a","♥","#cfe8fa","#a9d3f2"],
+["Poe","সকল AI এক সাথে","https://poe.com/","#5b3fd9","P","#fdf3a6","#f6e27a"]
+];
+var bn="১২৩৪৫৬৭৮৯",pal=["#f9a8c9","#fbe27a","#c9a8ee","#9fdcc0","#f9a8c9","#a9d3f2","#c9a8ee","#9fdcc0","#f9a8c9","#9fdcc0","#c9a8ee","#a9d3f2","#f9c28f","#9fdcc0","#a9d3f2","#fbe27a"];
+var W=[["ফাইল এক্সপ্লোরার খোলার শর্টকাট কী?",["E"],"📁","ফাইল এক্সপ্লোরার খুলুন"],
+["ডেস্কটপ দেখার শর্টকাট কী?",["D"],"🖥️","সব উইন্ডো মিনিমাইজ করে ডেস্কটপ দেখুন"],
+["কম্পিউটার লক করার শর্টকাট কী?",["L"],"🔒","কম্পিউটার লক করুন"],
+["রান ডায়ালগ খোলার শর্টকাট কী?",["R"],"🪟","Run বক্স খুলুন"],
+["ক্লিপবোর্ড হিস্ট্রি দেখার শর্টকাট কী?",["V"],"📋","ক্লিপবোর্ড হিস্ট্রি দেখুন"],
+["সেটিংস খোলার শর্টকাট কী?",["I"],"⚙️","Windows Settings খুলুন"],
+["অ্যাকশন সেন্টার খোলার শর্টকাট কী?",["A"],"💬","অ্যাকশন সেন্টার খুলুন"],
+["স্ক্রিনশট নেওয়ার শর্টকাট কী?",["Shift","S"],"✂️","স্ক্রিনের নির্দিষ্ট অংশের স্ক্রিনশট নিন"],
+["ভার্চুয়াল ডেস্কটপ তৈরির শর্টকাট কী?",["Ctrl","D"],"🗂️","নতুন ভার্চুয়াল ডেস্কটপ তৈরি করুন"],
+["টাস্ক ম্যানেজার খোলার শর্টকাট কী?",["X"],"📊","দ্রুত মেনু খুলুন (সেখান থেকে Task Manager)"]];
+var wm=document.getElementById("win");
+W.forEach(function(w,i){var ks=["⊞"].concat(w[1]).map(function(k){return '<span class="k">'+k+'</span>'}).join('<b>+</b>');
+var d=document.createElement("div");d.className="q";
+d.innerHTML='<div class="qb">Q'+(i+1)+'.</div><div class="qt">'+w[0]+'</div><div class="keys" aria-label="উত্তর">'+ks+'</div><div class="d"><i aria-hidden="true">'+w[2]+'</i><span>'+w[3]+'</span></div>';
+wm.appendChild(d)});
+var g=document.getElementById("grid");
+var order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+function num(i){var s=String(i+1),o="";for(var k=0;k<s.length;k++)o+=bn[+s[k]-1]||"০";return o}
+// two columns: left 1-8, right 9-15 (grid auto-flow row-wise, so interleave)
+var left=T.slice(0,8),right=T.slice(8);
+for(var r=0;r<8;r++){[[left,r,0],[right,r,8]].forEach(function(p){
+ var t=p[0][p[1]];var d=document.createElement("div");
+ if(!t){d.className="item";g.appendChild(d);return}
+ var i=p[2]+p[1];
+ d.className="item";
+ d.innerHTML='<div class="n" style="--c:'+pal[i]+'">'+num(i)+'</div>'+
+ '<div class="ic" style="background:'+t[3]+'" aria-hidden="true">'+t[4]+'</div>'+
+ '<div class="tx"><b>'+t[0]+'</b><span>'+t[1]+'</span>'+
+ '<a href="'+t[2]+'" target="_blank" rel="noopener" style="--c:'+t[5]+'">🔗 '+t[2]+'</a></div>';
+ g.appendChild(d);
+});}
+</script>
 </body>
 </html>
