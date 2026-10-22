@@ -37,7 +37,7 @@ h1{margin-bottom:18px}
 .k{min-width:42px;height:42px;padding:0 10px;display:grid;place-items:center;border:2px solid #7a8aa6;border-radius:8px;background:linear-gradient(#fff,#dfe5ee);color:#1d2a3a;font-weight:700;box-shadow:0 2px 0 #9aa7bd}
 .d{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:16px}.d i{font-style:normal;font-size:32px}
 .sec{margin:22px 0 0}.sec h2{margin:0 0 8px;font-size:22px;color:var(--red);}.sec p,.sec li{font-size:17px;line-height:1.7}.sec ul{margin:6px 0;padding-left:22px}
-.code{background:#1e2533;color:#e6edf7;border-radius:10px;padding:14px 16px;overflow-x:auto;font:14px/1.6 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre}
+.code{background:linear-gradient(135deg,#fbcfe8,#f9a8d4);color:#000000;border-radius:10px;padding:14px 16px;overflow-x:auto;font:14px/1.6 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre}
 .tw{overflow-x:auto}.tw table{border-collapse:collapse;width:100%;min-width:520px}.tw th,.tw td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;font-size:16px}.tw th{background:#16a34a;color:#fff}.tw code,.sec li code,.sec p code{background:rgba(22,163,74,.14);padding:1px 6px;border-radius:5px;font-size:.92em}
 .foot{text-align:center;font-weight:700;font-size:20px;margin:18px 0 0;color:var(--red)}
 @media (max-width:760px){.q{grid-template-columns:56px 1fr}.keys,.d{grid-column:2}}
@@ -55,6 +55,18 @@ h1.long .btn{padding:8px 24px}
 .tx a.lnk{margin-top:2px}
 .devmap{display:block;width:100%;max-width:720px;height:auto;margin:0 auto;border-radius:12px}
 .imgwrap{position:relative;max-width:720px;margin:0 auto}.imgwrap .devmap{max-width:100%}.hot{position:absolute;display:block;border-radius:10px;text-decoration:none;cursor:pointer}.hot:hover,.hot:focus-visible{background:rgba(22,163,74,.12);outline:3px solid #16a34a;outline-offset:-3px}
+.codebox{position:relative;background:linear-gradient(135deg,#fbcfe8,#f9a8d4);border-radius:12px;padding:16px 90px 16px 18px}
+.codebox pre{margin:0;overflow-x:auto}
+.codebox code{color:#000000;font-family:Consolas,monospace;font-size:15px;white-space:pre}
+.codebox .copybtn{position:absolute;top:50%;right:12px;transform:translateY(-50%);padding:6px 14px;border:0;border-radius:8px;background:#db2777;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.codebox .copybtn:hover{background:#be185d}
+.codebox.tall .copybtn{top:12px;transform:none}
+.codebox .copybtn:focus-visible{outline:3px solid #831843;outline-offset:2px}
+.codewrap{position:relative}
+.codewrap .code{padding-right:84px}
+.codewrap .copybtn{position:absolute;top:50%;right:12px;transform:translateY(-50%);padding:5px 12px;border:0;border-radius:8px;background:#db2777;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.codewrap .copybtn:hover{background:#be185d}
+.codewrap .copybtn:focus-visible{outline:3px solid #831843;outline-offset:2px}
 </style>
 </head>
 <body>
@@ -132,12 +144,12 @@ h1.long .btn{padding:8px 24px}
 </div>
 <div class="wrap">
 <header><h1><span class="btn">HTML-এর &lt;img&gt; ট্যাগ</span></h1><div class="note">ওয়েবপেজে ছবি দেখানোর সহজ উপায় 🖼️</div></header>
-<section class="sec"><h2>মূল কথা</h2><p><code>&lt;img&gt;</code> দিয়ে ওয়েবপেজে ছবি দেখানো হয়। এটি খালি ট্যাগ, ক্লোজিং ট্যাগ লাগে না।</p><div class="code">&lt;img src="photo.jpg" alt="ছবির বর্ণনা" width="600" height="400"&gt;</div></section>
+<section class="sec"><h2>মূল কথা</h2><p><code>&lt;img&gt;</code> দিয়ে ওয়েবপেজে ছবি দেখানো হয়। এটি খালি ট্যাগ, ক্লোজিং ট্যাগ লাগে না।</p><div class="codewrap"><div class="code">&lt;img src="photo.jpg" alt="ছবির বর্ণনা" width="600" height="400"&gt;</div><button type="button" class="copybtn" onclick="copyBlock(this)">কপি</button></div></section>
 <section class="sec"><h2>৪টি জরুরি অ্যাট্রিবিউট</h2><ul><li><code>src</code> : ছবির ঠিকানা (আবশ্যক)</li><li><code>alt</code> : ছবির বর্ণনা, ছবি লোড না হলে এটি দেখায় (আবশ্যক)</li><li><code>width</code>, <code>height</code> : মাপ দিলে পেজ লাফায় না</li><li><code>loading="lazy"</code> : দরকার হলেই ছবি লোড হয়, পেজ দ্রুত খোলে</li></ul><p>ছবি রেসপনসিভ করতে CSS-এ দিন: <code>max-width:100%; height:auto;</code></p></section>
 </div>
 <div class="wrap">
 <header><h1><span class="btn">HTML-এর &lt;a&gt; (অ্যাঙ্কর) ট্যাগ</span></h1><div class="note">লিংক তৈরির ট্যাগ 🔗</div></header>
-<section class="sec"><h2>মূল কথা</h2><p><code>&lt;a&gt;</code> (অ্যাঙ্কর) ট্যাগ দিয়ে লিংক তৈরি হয়। লিংকে ক্লিক করলে অন্য পেজ, ফাইল বা পেজের অন্য অংশে যাওয়া যায়।</p><div class="code">&lt;a href="https://example.com" target="_blank" rel="noopener"&gt;এখানে ক্লিক করুন&lt;/a&gt;</div></section>
+<section class="sec"><h2>মূল কথা</h2><p><code>&lt;a&gt;</code> (অ্যাঙ্কর) ট্যাগ দিয়ে লিংক তৈরি হয়। লিংকে ক্লিক করলে অন্য পেজ, ফাইল বা পেজের অন্য অংশে যাওয়া যায়।</p><div class="codewrap"><div class="code">&lt;a href="https://example.com" target="_blank" rel="noopener"&gt;এখানে ক্লিক করুন&lt;/a&gt;</div><button type="button" class="copybtn" onclick="copyBlock(this)">কপি</button></div></section>
 <section class="sec"><h2>জরুরি অ্যাট্রিবিউট</h2><ul><li><code>href</code> : লিংকের গন্তব্য (আবশ্যক)</li><li><code>target="_blank"</code> : নতুন ট্যাবে খোলে</li><li><code>rel="noopener"</code> : নতুন ট্যাবে খুললে নিরাপত্তার জন্য দিন</li><li><code>download</code> : ক্লিকে ফাইল ডাউনলোড হয়</li></ul></section>
 <section class="sec"><h2>href-এ কী কী দেওয়া যায়</h2><ul><li>ওয়েব ঠিকানা: <code>https://example.com</code></li><li>পেজের অংশ: <code>#contact</code></li><li>ইমেইল: <code>mailto:name@mail.com</code></li><li>ফোন: <code>tel:+8801700000000</code></li></ul><p>ছবিকেও লিংক করা যায়: <code>&lt;a href="#"&gt;&lt;img src="logo.png" alt="হোম"&gt;&lt;/a&gt;</code></p></section>
 </div>
@@ -162,6 +174,63 @@ h1.long .btn{padding:8px 24px}
 <a class="hot" href="https://xodo.com/" target="_blank" rel="noopener noreferrer" aria-label="Xodo.com ওয়েবসাইট খুলুন" title="Xodo.com" style="left:18.06%;top:79.19%;width:72.22%;height:7.26%"></a>
 <a class="hot" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer" aria-label="Canva.com ওয়েবসাইট খুলুন" title="Canva.com" style="left:18.06%;top:86.44%;width:72.22%;height:7.48%"></a>
 </div>
+<div class="wrap">
+<p style="margin:0 0 12px;font-weight:700">কোড ব্লকের ডানে কপি বাটন দেওয়া কোড:</p>
+<div class="codebox tall">
+<pre><code>&lt;style&gt;
+  .codebox{position:relative;background:#1e2233;border-radius:12px;padding:16px 90px 16px 18px;}
+  .codebox pre{margin:0;overflow-x:auto;}
+  .codebox code{color:#e6e9f2;font-family:Consolas,monospace;font-size:15px;white-space:pre;}
+  .codebox .copybtn{position:absolute;top:50%;right:12px;transform:translateY(-50%);
+    padding:6px 14px;border:0;border-radius:8px;background:#16a34a;color:#fff;
+    font:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+  .codebox .copybtn:hover{background:#15803d;}
+&lt;/style&gt;
+
+&lt;div class="codebox"&gt;
+  &lt;pre&gt;&lt;code&gt;&amp;lt;img src="photo.jpg" alt="ছবির বর্ণনা" width="600" height="400"&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+  &lt;button type="button" class="copybtn" onclick="copyCode(this)"&gt;কপি&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+function copyCode(btn){
+  var text = btn.parentNode.querySelector('code').textContent;
+  var done = function(){
+    btn.textContent = 'কপি হয়েছে ✓';
+    setTimeout(function(){ btn.textContent = 'কপি'; }, 1500);
+  };
+  if (navigator.clipboard &amp;&amp; navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done);
+  } else {
+    var t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t); done();
+  }
+}
+&lt;/script&gt;</code></pre>
+<button type="button" class="copybtn" onclick="copyCode(this)">কপি</button>
+</div>
+<ul style="margin:16px 0 0;padding-left:22px;line-height:1.8">
+<li>কোডের ভেতরে <code>&lt;</code> ও <code>&gt;</code> লিখতে হয়েছে <code>&amp;lt;</code> ও <code>&amp;gt;</code> দিয়ে, নইলে ব্রাউজার ট্যাগটিকে সত্যিকারের ছবি ধরে নেবে। কপি করলে কিন্তু সঠিক <code>&lt;img ...&gt;</code> টেক্সটই কপি হবে।</li>
+<li>একই পেজে একাধিক কোড ব্লক থাকলে প্রতিটির জন্য শুধু <code>&lt;div class="codebox"&gt;</code> অংশটি আবার লিখলেই চলবে। CSS ও স্ক্রিপ্ট একবারই লাগবে।</li>
+</ul>
+</div>
+<script>
+function copyBlock(b){
+  var t=b.previousElementSibling.textContent;
+  var done=function(){b.textContent='কপি হয়েছে ✓';setTimeout(function(){b.textContent='কপি';},1500);};
+  function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(a);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);}else fb();
+}
+</script>
+<script>
+function copyCode(b){
+  var t=b.parentNode.querySelector('code').textContent;
+  var done=function(){b.textContent='কপি হয়েছে ✓';setTimeout(function(){b.textContent='কপি';},1500);};
+  function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(a);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);}else fb();
+}
+</script>
 <script>
 var T=[
 ["ChatGPT","লেখালেখি ও কনটেন্ট তৈরি","https://chatgpt.com/","#10a37f","G","#f9c6dc","#f7a8c8"],
