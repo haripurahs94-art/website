@@ -428,47 +428,5 @@
 </div>
 
 
-<script>
-(function(){
-  const cards=[...document.querySelectorAll('.card')];
-  const q=document.getElementById('q'),cnt=document.getElementById('qCount'),none=document.getElementById('qNone');
-  const bnD='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>bnD[d]);
-  cards.forEach((c,i)=>{c.dataset.n=i+1;c._html=c.innerHTML;c._text=c.textContent.toLowerCase();});
-
-  function mark(card,term){
-    const w=document.createTreeWalker(card,NodeFilter.SHOW_TEXT),nodes=[];
-    while(w.nextNode())nodes.push(w.currentNode);
-    nodes.forEach(n=>{
-      const t=n.nodeValue,l=t.toLowerCase();
-      let i=l.indexOf(term);
-      if(i<0)return;
-      const f=document.createDocumentFragment();let last=0;
-      while(i>=0){
-        f.appendChild(document.createTextNode(t.slice(last,i)));
-        const m=document.createElement('mark');m.className='hit';m.textContent=t.slice(i,i+term.length);f.appendChild(m);
-        last=i+term.length;i=l.indexOf(term,last);
-      }
-      f.appendChild(document.createTextNode(t.slice(last)));
-      n.parentNode.replaceChild(f,n);
-    });
-  }
-  function run(){
-    const term=q.value.trim().toLowerCase().replace(/\s+/g,' ');
-    let shown=0;
-    cards.forEach(c=>{
-      c.innerHTML=c._html;
-      const ok=!term||c._text.replace(/\s+/g,' ').includes(term);
-      c.style.display=ok?'':'none';
-      if(ok){shown++;if(term)mark(c,term);}
-    });
-    none.classList.toggle('show',!!term&&shown===0);
-    cnt.textContent=term&&shown?bn(cards.length)+'টির মধ্যে '+bn(shown)+'টি পাওয়া গেছে':'';
-  }
-  q.addEventListener('input',run);
-  q.addEventListener('keydown',e=>{if(e.key==='Escape'){q.value='';run();}});
-  document.getElementById('qClear').addEventListener('click',()=>{q.value='';run();q.focus();});
-  run();
-})();
-</script>
 </body>
 </html>
